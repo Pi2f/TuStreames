@@ -1,0 +1,19 @@
+{
+  "name": "tu-streames",
+  "version": "1.0.0",
+  "description": "Application de streaming de vidéos youtube ou vimeo",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/SecuSIPolytech/securitesi.git"
+  },
+  "author": "François EVEN & Pierre FRANC",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/SecuSIPolytech/securitesi/issues"
+  },
+  "homepage": "https://gitlab.com/SecuSIPolytech/securitesi#README"
+}
