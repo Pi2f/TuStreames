@@ -1,33 +1,38 @@
-<!doctype html>
-<html lang="en" ng-app="TuStreames">
+<!DOCTYPE HTML>
+<html lang="en" ng-app="home">
   <head>
     <meta charset="utf-8">
-    <title>My HTML File</title>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <script src="js/routing.js"></script>
-
-    <script src="js/accueilCtrl.js"></script>
-    
-    <script src="js/administrationCtrl.js"></script>
-    
-    <script src="js/passwordResetCtrl.js"></script>
-    
-    <script src="js/playlistCtrl.js"></script>
-
-    <script src="js/signInCtrl.js"></script>
-
-    <script src="js/signUpCtrl.js"></script>
-
-    <script src="js/streamCtrl.js"></script>
-    
-
-    <script src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+    <title>Tu Streames !</title>
+    <link rel="stylesheet" href="app/stylesheets/style.css" type="text/css">
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Tu Streames !</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <p>Nothing here {{'yet' + '!'}}</p>
-    <p>We'll use routing on this page</p>
-
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Sign in<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sign up</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" placeholder="Search" type="text">
+          <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <div class="container bg-light"></div>
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/popper.js/dist/popper.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   </body>
 </html>
