@@ -1,15 +1,13 @@
-<!DOCTYPE HTML>
-<html lang="en" ng-app="home">
+<!DOCTYPE html>
+<html lang="en" ng-app="tuStreames">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
     <title>Tu Streames !</title>
     <link rel="stylesheet" href="app/stylesheets/style.css" type="text/css">
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg">
       <a class="navbar-brand" href="#">Tu Streames !</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -18,36 +16,29 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Sign in<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#!/subscribe">Subscribe<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Sign up</a>
+            <a class="nav-link" href="#!/signin">Sign in</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" placeholder="Search" type="text">
-          <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+          <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
-    <div class="container bg-light">
-        <div class="d-flex justify-content-center align-items-center">
-          <div class="form-login">
-            <h4>Welcome back.</h4>
-            <input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
-            </br>
-            <input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
-            </br>
-            <div class="wrapper">
-              <span class="group-btn">
-                <a href="#" class="btn btn-primary btn-md">login <i class="fa fa-sign-in-alt"></i></a>
-              </span>
-            </div>
-          </div>
-        </div>
-    </div>
+    <div ng-view></div>
     <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="node_modules/popper.js/dist/popper.min.js"></script>
+    <script type="text/javascript" src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+    <script type="module" src="node_modules/popper.js/dist/popper-utils.min.js"></script>
+    <script type="module" src="node_modules/popper.js/dist/popper.min.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/signin/signin.js"></script>
+    <script type="text/javascript" src="app/subscribe/subscribe.js"></script>
+    <script type="text/javascript" src="app/playlist/playlist.js"></script>
   </body>
 </html>

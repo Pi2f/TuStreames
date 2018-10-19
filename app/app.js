@@ -1,5 +1,16 @@
-var home = angular.module('home', []);
+angular.module('tuStreames', [
+  'ngRoute',
+  'signin',
+  'subscribe',
+  'playlist'
+])
+.config(['$locationProvider', '$routeProvider',
+  function config($locationProvider, $routeProvider) {
+    $locationProvider.hashPrefix('!');
 
-function mainController($scope, $http) {
-
-};
+    $routeProvider.
+      otherwise({
+        redirectTo: '/subscribe'
+      })
+  }
+]);

@@ -1,42 +1,22 @@
+$fa-font-path: "../webfonts";
+
+$body-bg: #E4E4E4;
+
+$theme-colors: (
+"primary": #F1684E,
+"navbar-color": #1B1B1B,
+);
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
 @import "../../node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "signin";
+@import "subscribe";
 
-$fa-font-path:        "../webfonts";
+.navbar {
+  background-color: map_get($theme-colors,"navbar-color");
 
-body {
-  background-color:#fff;
-  -webkit-font-smoothing: antialiased;
-  font: normal 14px Roboto,arial,sans-serif;
-}
-
-.container {
-    padding: 25px;
-}
-
-.form-login {
-    background-color: #EDEDED;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 15px;
-    border-color:#d2d2d2;
-    border-width: 5px;
-    box-shadow:0 1px 0 #cfcfcf;
-}
-
-h4 {
- border:0 solid #fff;
- border-bottom-width:1px;
- padding-bottom:10px;
- text-align: center;
-}
-
-.form-control {
-    border-radius: 10px;
-}
-
-.wrapper {
-    text-align: center;
+  .nav-link, a.navbar-brand {
+    color: map_get($theme-colors,"primary");
+  }
 }
