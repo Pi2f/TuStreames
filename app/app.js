@@ -3,7 +3,8 @@ angular.module('tuStreames', [
   'signin',
   'subscribe',
   'playlist',
-  'testAPI'
+  'testAPI',
+  'streaming'
 ])
 .config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {

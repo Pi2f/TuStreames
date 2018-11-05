@@ -11,16 +11,25 @@ const options = {
   key: fs.readFileSync(path.resolve('server.key')),
   cert : fs.readFileSync(path.resolve('server.cert')),
 }
-
 const app = express();
 const router = express.Router();
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); //ici être plus restrictif, genre le lien de l'app mobile
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-with, content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  next();
+});
 app.use(express.static(__dirname));
 
 router.get('/', (req, res) => res.sendFile(__dirname+'/app/index.html'));
+
+
 
 var readline = require('readline');
 var {google} = require('googleapis');
@@ -33,20 +42,24 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'google-apis-nodejs-quickstart.json';
 
-// Load client secrets from a local file.
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
-  if (err) {
-    console.log('Error loading client secret file: ' + err);
-    return;
-  }
-  // Authorize a client with the loaded credentials, then call the YouTube API.
-  //See full code sample for authorize() function code.
-authorize(JSON.parse(content), {'params': {'maxResults': '2',
+app.post("/testRechercher", function(req, res) {
+  // Load client secrets from a local file.
+  fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+    if (err) {
+      console.log('Error loading client secret file: ' + err);
+      return;
+    }
+    // Authorize a client with the loaded credentials, then call the YouTube API.
+    //See full code sample for authorize() function code.
+    console.log(req.body);
+    authorize(JSON.parse(content), {'params': {'maxResults': '2',
                  'part': 'snippet',
-                 'q': 'centuries',
-                 'type': ''}}, searchListByKeyword);
+                 'q': req.body.keyword,
+                 'type': 'video'}}, res, searchListByKeyword);
 
+  });
 });
+
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -55,7 +68,7 @@ authorize(JSON.parse(content), {'params': {'maxResults': '2',
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-function authorize(credentials, requestData, callback) {
+function authorize(credentials, requestData, res, callback) {
   var clientSecret = credentials.installed.client_secret;
   var clientId = credentials.installed.client_id;
   var redirectUrl = credentials.installed.redirect_uris[0];
@@ -69,7 +82,7 @@ function authorize(credentials, requestData, callback) {
       getNewToken(oauth2Client, requestData, callback);
     } else {
       oauth2Client.credentials = JSON.parse(token);
-      callback(oauth2Client, requestData);
+      callback(oauth2Client, requestData, res);
     }
   });
 }
@@ -180,7 +193,7 @@ function createResource(properties) {
 }
 
 
-function searchListByKeyword(auth, requestData) {
+function searchListByKeyword(auth, requestData, res) {
   var service = google.youtube('v3');
   var parameters = removeEmptyParameters(requestData['params']);
   parameters['auth'] = auth;
@@ -189,14 +202,15 @@ function searchListByKeyword(auth, requestData) {
       console.log('The API returned an error: ' + err);
       return;
     }
-    console.log(response);
+    console.log ("creation obj");
+    var obj = {
+      success:true,
+      data:response.data
+    };
+
+    res.send(obj); 
   });
 }
-
-
-app.get("/testYT", function(req, res) {
-  getChannel();
-});
 
 
 app.use(router);

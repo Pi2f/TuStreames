@@ -1,6 +1,18 @@
 testRouting.factory('testAPIService', ['$http',  function($http) {
     var serv = {};
 
+    serv.rechercher = function(keyword, cb) {
+        var req = {
+            keyword : keyword
+        };
+        $http.post('/testRechercher', req)
+            .then(function(resp) {
+                cb(resp.data);
+            }, function(resp) {
+                alert("Erreur");
+            });
+    };
+
     return serv;
     
 

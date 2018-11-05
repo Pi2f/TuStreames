@@ -1,2 +1,21 @@
 coucou - {{1+1}} <br>
-{{maVar}}
+<form role="form" ng-submit="rechercher()">
+    <div>
+        <label for="Rechercher">qsdfqfqdfqf Rechercher : </label><input type="text" ng-model="keyword" name="Rechercher"/><br/>
+        <br/>
+        <input type="submit" value="Go!"/>
+    </div>
+    ------------- ID : ({{idVideo}}) <br>
+    ------------- Description : ({{descriptionVideo}}) <br>
+    ------------- Chaîne : ({{chaineVideo}}) <br>
+    ------------- thumbnail : todo <br>
+</form>
+<input type="button" value="voir" ng-click="seeVideo()">
+
+------------- <br>
+
+<div class="list-group">
+    <div ng-repeat="vt in videoSet"> 
+        <span ng-bind="vt.title"></span></span> <br>
+    </div>
+</div>
