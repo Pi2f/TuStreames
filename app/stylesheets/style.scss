@@ -4,7 +4,7 @@ $body-bg: #E4E4E4;
 
 $theme-colors: (
 "primary": #F1684E,
-"navbar-color": #1B1B1B,
+"secondary": #1B1B1B,
 );
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
@@ -12,11 +12,20 @@ $theme-colors: (
 @import "../../node_modules/@fortawesome/fontawesome-free/scss/solid";
 @import "signin";
 @import "subscribe";
+@import "sidebar";
 
 .navbar {
-  background-color: map_get($theme-colors,"navbar-color");
+  background-color: map_get($theme-colors,"secondary");
 
   .nav-link, a.navbar-brand {
     color: map_get($theme-colors,"primary");
   }
+}
+
+.content {
+  position: -webkit-sticky;
+  position: sticky;
+  height: calc(100vh);
+  z-index: 1000;
+  overflow: auto;
 }
