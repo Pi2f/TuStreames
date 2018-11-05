@@ -31,6 +31,9 @@ router.get('/', (req, res) => res.sendFile(__dirname+'/app/index.html'));
 
 
 
+//######################################################
+//####                   Youtube                    ####
+//######################################################
 var readline = require('readline');
 var {google} = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
@@ -52,7 +55,7 @@ app.post("/testRechercher", function(req, res) {
     // Authorize a client with the loaded credentials, then call the YouTube API.
     //See full code sample for authorize() function code.
     console.log(req.body);
-    authorize(JSON.parse(content), {'params': {'maxResults': '2',
+    authorize(JSON.parse(content), {'params': {'maxResults': '25',
                  'part': 'snippet',
                  'q': req.body.keyword,
                  'type': 'video'}}, res, searchListByKeyword);
@@ -212,6 +215,38 @@ function searchListByKeyword(auth, requestData, res) {
   });
 }
 
+
+//######################################################
+//####                   Vimeo                      ####
+//######################################################
+
+var clientID = "52661bbe93423155c914afc02a3fef458e29975e";
+var unautenticatedToken = "79745e50364d3998b30466e00e7d122e";
+var clientSecret = "8HfB7YG/WAWcX/5Tz5Vrx7VuuYYCjn1YT35JgU6Pj7Ncr4RxVdTQxzu2CY2HfNqQEzvh4rqh/d6df0JZFZ25c5FlntePqIOuLsOwRfzLVSmjutwlDkMvyeNGs2UsbQ/w";
+
+let Vimeo = require('vimeo').Vimeo;
+let client = new Vimeo(clientID, clientSecret, unautenticatedToken);
+
+app.post("/testRechercherVimeo", function(req, res) {
+  client.request({
+    method: 'GET',
+    path: '/videos',
+    query: {
+      query : req.body.keyword,
+      per_page : 25
+    }
+  }, function (error, body, status_code, headers) {
+    if (error) {
+      console.log(error);
+    }
+    console.log(body);
+    res.send(body.data);
+  })
+});
+
+
+
+//######################################################
 
 app.use(router);
 

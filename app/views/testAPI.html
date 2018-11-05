@@ -1,21 +1,28 @@
-coucou - {{1+1}} <br>
+1+1={{1+1}} <br>
 <form role="form" ng-submit="rechercher()">
     <div>
-        <label for="Rechercher">qsdfqfqdfqf Rechercher : </label><input type="text" ng-model="keyword" name="Rechercher"/><br/>
-        <br/>
-        <input type="submit" value="Go!"/>
+        <label for="Rechercher">qsdfqfqdfqf Rechercher : </label><input type="text" ng-model="keyword" name="Rechercher"/>
+        <input type="submit" value="Go Youtube!"/>
     </div>
-    ------------- ID : ({{idVideo}}) <br>
-    ------------- Description : ({{descriptionVideo}}) <br>
-    ------------- Chaîne : ({{chaineVideo}}) <br>
-    ------------- thumbnail : todo <br>
 </form>
-<input type="button" value="voir" ng-click="seeVideo()">
+<form role="form" ng-submit="rechercherVimeo()">
+        <div>
+            <label for="RechercherVimeo">qsdfqfqdfqf Rechercher : </label><input type="text" ng-model="keywordVimeo" name="RechercherVimeo"/>
+            <input type="submit" value="Go Vimeo!"/>
+        </div>
+    </form>
 
-------------- <br>
+------- Resultats : {{nbRes ? nbRes : 0}} ------- <br>
 
 <div class="list-group">
-    <div ng-repeat="vt in videoSet"> 
-        <span ng-bind="vt.title"></span></span> <br>
+    <div ng-repeat="video in videoSet">
+        <div ng-click="stream(video)">
+            <div style="float:left;">
+                <img ng-src={{video.thumbnail}}>
+            </div>
+            
+            <h1><span ng-bind="video.title"></span></span></h1>
+            <span ng-bind="video.description"></span>
+        </div>
     </div>
 </div>

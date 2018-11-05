@@ -8,45 +8,50 @@ module('testAPI', ['ngRoute'])
 }])
 .controller('testAPICtrl', ['$scope', '$rootScope', '$http', '$location', 'testAPIService', function($scope, $rootScope, $http, $location, testAPIService) {
 
-  $scope.idVideo = "";
-  $scope.descriptionVideo = "";
-  $scope.chaineVideo = "";
+  var videoSet = [];
 
   $scope.rechercher = function() {
     if ($scope.keyword) {
       testAPIService.rechercher($scope.keyword, function(resp) {
         if (resp.success == true) {
-          alert("recherche réussie");
-
-          $scope.idVideo = resp.data.items[0].id.videoId;
-          $scope.descriptionVideo = resp.data.items[0].snippet.description;
-          $scope.chaineVideo = resp.data.items[0].snippet.channelTitle;
-          $scope.titreVideo = resp.data.items[0].snippet.title;
-          
+          console.log(resp.data.items[0]);
+          for (var i = 0; i < resp.data.items.length; i++) {
+            
+            video = {
+              id : resp.data.items[i].id.videoId,
+              description : resp.data.items[i].snippet.description,
+              channel : resp.data.items[i].snippet.channelTitle,
+              title : resp.data.items[i].snippet.title,
+              thumbnail : resp.data.items[i].snippet.thumbnails.default.url
+            }
+            videoSet.push(video);
+          }
+          $scope.nbRes = resp.data.items.length;
+          $scope.videoSet = videoSet;
         } else {
-          alert("recherche ratée")
+          alert("recherche échouée")
         }
       });
     } else {
-      alert("champ recherche vide")
+      alert("Aucun mot clef renseigné")
     }
   };
 
-  $scope.seeVideo = function() {
-    if ($scope.idVideo) {
-      $rootScope.videoStream = {
-        id : $scope.idVideo,
-        description : $scope.descriptionVideo,
-        chaine : $scope.chaineVideo,
-        titre : $scope.titreVideo
-      }
+  $scope.rechercherVimeo = function() {
+    if ($scope.keywordVimeo) {
+      testAPIService.rechercherVimeo($scope.keywordVimeo, function(resp) {
+        
+      });
+    } else {
+      alert ("Pas de mot clef renseigné")
+    }
+  };
+
+  $scope.stream = function(video) {
+      $rootScope.videoStream = video;
 
       //$state.go('streaming');
       $location.path('/streaming');
-    
-    } else {
-      alert('pas d\'id')
-    }
   }
 
 }]);
