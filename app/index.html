@@ -24,8 +24,15 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" placeholder="Search" type="text">
-          <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+          <button class="btn btn-primary my-2 my-sm-0" type="submit" ui-sref="search">Search</button>
         </form>
+        <div class="pull-right">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" ui-sref="admin" ui-sref-active="active">Admin</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -54,5 +61,10 @@
     <script type="text/javascript" src="app/sidebar/sidebar.js"></script>
     <script type="text/javascript" src="app/playlist/playlist.js"></script>
     <script type="text/javascript" src="app/home/home.js"></script>
+    <script type="text/javascript" src="app/historique/historique.js"></script>
+    <script type="text/javascript" src="app/preview-playlist/preview-playlist.js"></script>
+    <script type="text/javascript" src="app/admin/admin.js"></script>
+    <script type="text/javascript" src="app/userlist/userlist.js"></script>
+    <script type="text/javascript" src="app/search/search.js"></script>
   </body>
-  </html>
+</html>

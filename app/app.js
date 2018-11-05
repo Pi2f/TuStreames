@@ -20,7 +20,23 @@ angular
     name: 'home',
     url: '/home',
     component: 'home'
-  }];
+  },
+  {
+    name: 'admin',
+    url: '/admin',
+    component: 'admin'
+  },
+  {
+    name: 'userlist',
+    url: '/userlist',
+    component: 'userlist'
+  },
+  {
+    name: 'search',
+    url: '/search',
+    component: 'search'
+  }
+];
 
   $urlRouterProvider.otherwise('/subscribe');
   state.forEach(route => {
