@@ -1,12 +1,8 @@
-angular.
-module('home', ['ngRoute']).
-config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/home', {
-    templateUrl: 'app/home/home.template.html',
-    controller: 'homeCtrl'
-  });
-}])
+angular.module('app').component('home', {
+  templateUrl: 'app/views/home.template.html',
+  controller: sidebarCtrl,
+});
 
-.controller('homeCtrl', [function() {
-
-}]);
+function homeCtrl($scope, $element, $attrs) {
+  
+}

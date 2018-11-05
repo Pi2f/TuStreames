@@ -1,0 +1,31 @@
+#sidebar {
+    min-width: 150px;
+    max-width: 150px;
+    background-color: map_get($theme-colors,"primary");
+    color: map_get($theme-colors,"secondary");
+    transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
+    transform-origin: center left; /* Set the transformed position of sidebar to center left side. */
+    height: calc(100vh);
+    ul {
+        overflow: auto;
+    }
+}
+
+#sidebar.active {
+    margin-left: -150px;
+}
+
+$btn-size: 45px;
+.btn-sidebar{
+  transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
+  background-color: map_get($theme-colors,"primary");
+  height: $btn-size * 2;
+  width: $btn-size;
+  border-bottom-right-radius: $btn-size * 2;
+  border-top-right-radius: $btn-size * 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 32px;
+  padding-left: 10px;
+}
