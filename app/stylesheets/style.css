@@ -13958,9 +13958,8 @@ readers do not read off random characters that represent icons */
 }
 
 .content {
-  position: -webkit-sticky;
-  position: sticky;
   height: calc(100vh);
+  position: relative;
   z-index: 1000;
   overflow: auto;
 }
