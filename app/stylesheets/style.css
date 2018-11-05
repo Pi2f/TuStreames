@@ -13916,6 +13916,7 @@ readers do not read off random characters that represent icons */
   background-size: cover;
 }
 
+<<<<<<< HEAD
 .sidebar {
   transition: all 0.6s cubic-bezier(0.945, 0.02, 0.27, 0.665);
   transform-origin: center left;
@@ -13926,13 +13927,29 @@ readers do not read off random characters that represent icons */
 
 #sidebar {
   height: calc(100vh);
+=======
+#sidebar {
+>>>>>>> d95d5e8c1f12d8b44f71a9d4141286f81cb72858
   min-width: 150px;
   max-width: 150px;
   background-color: #F1684E;
   color: #1B1B1B;
+<<<<<<< HEAD
 }
 
 .sidebar.active {
+=======
+  transition: all 0.6s cubic-bezier(0.945, 0.02, 0.27, 0.665);
+  transform-origin: center left;
+  /* Set the transformed position of sidebar to center left side. */
+  height: calc(100vh);
+}
+#sidebar ul {
+  overflow: auto;
+}
+
+#sidebar.active {
+>>>>>>> d95d5e8c1f12d8b44f71a9d4141286f81cb72858
   margin-left: -150px;
 }
 
