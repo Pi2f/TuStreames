@@ -6,7 +6,7 @@
     <title>Tu Streames !</title>
     <link rel="stylesheet" href="app/stylesheets/style.css" type="text/css">
   </head>
-  <body ng-app="app">
+  <body ng-app="app" ng-controller="AppController">
     <nav class="navbar navbar-expand-lg">
           <a class="navbar-brand" href="#">Tu Streames !</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,11 @@
             <li class="nav-item active">
               <a class="nav-link" ui-sref="admin" ui-sref-active="active">Admin</a>
             </li>
+            <li class="nav-item active">
+              <a href="" class="nav-link" ng-click="logout();">
+                <i class="fas fa-sign-out-alt"></i>
+              </a>
+            </li>  
           </ul>
         </div>
       </div>
@@ -38,7 +43,7 @@
 
     <div class="fluid-container">
             <div class="row flex-xl-no-wrap mx-0">
-              <div class="sidebar">
+              <div class="sidebar" ng-if="user">
                 <sidebar></sidebar>
               </div>
               <div class="col py-md-3 content">
@@ -66,5 +71,7 @@
     <script type="text/javascript" src="app/admin/admin.js"></script>
     <script type="text/javascript" src="app/userlist/userlist.js"></script>
     <script type="text/javascript" src="app/search/search.js"></script>
+    <script type="text/javascript" src="app/signinService.js"></script>
+    <script type="text/javascript" src="app/subscribeService.js"></script>
   </body>
 </html>
