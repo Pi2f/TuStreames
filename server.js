@@ -238,6 +238,7 @@ app.post("/testRechercherVimeo", function(req, res) {
   }, function (error, body, status_code, headers) {
     if (error) {
       console.log(error);
+      res.send({success : false});
     }
     console.log(body);
     res.send(body.data);

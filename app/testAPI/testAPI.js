@@ -22,7 +22,8 @@ module('testAPI', ['ngRoute'])
               description : resp.data.items[i].snippet.description,
               channel : resp.data.items[i].snippet.channelTitle,
               title : resp.data.items[i].snippet.title,
-              thumbnail : resp.data.items[i].snippet.thumbnails.default.url
+              thumbnail : resp.data.items[i].snippet.thumbnails.default.url,
+              embedUrl : "https://www.youtube.com/embed/"
             }
             videoSet.push(video);
           }
@@ -40,7 +41,20 @@ module('testAPI', ['ngRoute'])
   $scope.rechercherVimeo = function() {
     if ($scope.keywordVimeo) {
       testAPIService.rechercherVimeo($scope.keywordVimeo, function(resp) {
-        
+        console.log(resp);
+        for (var i = 0; i < resp.length; i++) {                    
+          video = {
+            id: resp[i].uri.split("/")[2],
+            description:resp[i].description,
+            channel:resp[i].user.name,
+            title:resp[i].name,
+            thumbnail:resp[i].pictures.sizes[1].link,
+            embedUrl : "https://player.vimeo.com/video/"
+          };
+          videoSet.push(video);
+        }
+        $scope.nbRes = resp.length;
+        $scope.videoSet = videoSet;
       });
     } else {
       alert ("Pas de mot clef renseigné")

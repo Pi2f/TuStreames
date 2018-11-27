@@ -19,7 +19,7 @@ module('streaming', ['ngRoute'])
         description : $rootScope.videoStream.description,
         chaine : $rootScope.videoStream.chaine,
         titre : $rootScope.videoStream.titre,
-        url : "https://www.youtube.com/embed/" + $rootScope.videoStream.id
+        url : $rootScope.videoStream.embedUrl + $rootScope.videoStream.id
     };
     
 }])

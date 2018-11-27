@@ -13,7 +13,7 @@ testRouting.factory('testAPIService', ['$http',  function($http) {
             });
     };
 
-    serv.rechercherVimeo = function(keyword, cb) {
+    serv.rechercherVimeo = function(keywordVimeo, cb) {
         var req = {
             keyword : keywordVimeo
         };
