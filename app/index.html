@@ -14,25 +14,25 @@
       </button>
 
       <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" ui-sref="subscribe" ui-sref-active="active">Subscribe<span class="sr-only">(current)</span></a>
+        <ul class="navbar-nav mr-auto"> 
+          <li class="nav-item" ng-if='!user'>
+            <a class="nav-link" ui-sref="register" ui-sref-active="active">Subscribe<span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" ui-sref="signin" ui-sref-active="active">Sign in</a>
+          <li class="nav-item" ng-if='!user'>
+            <a class="nav-link" ui-sref="authentication" ui-sref-active="active">Sign in</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" placeholder="Search" type="text">
-          <button class="btn btn-primary my-2 my-sm-0" type="submit" ui-sref="search">Search</button>
+        <form class="form-inline my-2 my-lg-0" ng-if="user">
+          <input class="form-control mr-sm-2" placeholder="Search" type="text" ng-model="value">
+          <button class="btn btn-primary my-2 my-sm-0" type="submit" ui-sref="search({value: value})">Search</button>
         </form>
         <div class="pull-right">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item" ng-if="user.admin">
               <a class="nav-link" ui-sref="admin" ui-sref-active="active">Admin</a>
             </li>
-            <li class="nav-item active">
-              <a href="" class="nav-link" ng-click="logout();">
+            <li class="nav-item" ng-if="user">
+              <a href="" class="nav-link" ng-click="logout()">
                 <i class="fas fa-sign-out-alt"></i>
               </a>
             </li>  
@@ -61,17 +61,17 @@
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
     <script type="text/javascript" src="node_modules/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/subscribe/subscribe.js"></script>
-    <script type="text/javascript" src="app/signin/signin.js"></script>
-    <script type="text/javascript" src="app/sidebar/sidebar.js"></script>
-    <script type="text/javascript" src="app/playlist/playlist.js"></script>
-    <script type="text/javascript" src="app/home/home.js"></script>
-    <script type="text/javascript" src="app/historique/historique.js"></script>
-    <script type="text/javascript" src="app/preview-playlist/preview-playlist.js"></script>
-    <script type="text/javascript" src="app/admin/admin.js"></script>
-    <script type="text/javascript" src="app/userlist/userlist.js"></script>
-    <script type="text/javascript" src="app/search/search.js"></script>
-    <script type="text/javascript" src="app/signinService.js"></script>
-    <script type="text/javascript" src="app/subscribeService.js"></script>
+    <script type="text/javascript" src="app/app-components/register.component.js"></script>
+    <script type="text/javascript" src="app/app-components/authentication.component.js"></script>
+    <script type="text/javascript" src="app/app-components/sidebar.component.js"></script>
+    <script type="text/javascript" src="app/app-components/home.component.js"></script>
+    <script type="text/javascript" src="app/app-components/preview-playlist.component.js"></script>
+    <script type="text/javascript" src="app/app-components/historique.component.js"></script>
+    <script type="text/javascript" src="app/app-components/search.component.js"></script>
+    <script type="text/javascript" src="app/app-components/stream.component.js"></script>
+    <script type="text/javascript" src="app/app-services/authentication.service.js"></script>
+    <script type="text/javascript" src="app/app-services/user.service.js"></script>
+    <script type="text/javascript" src="app/app-services/playlist.service.js"></script>
+    <script type="text/javascript" src="app/app-services/search.service.js"></script>
   </body>
 </html>

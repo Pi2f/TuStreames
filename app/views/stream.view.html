@@ -1,0 +1,10 @@
+<div class="row">
+    <div class="col">
+        <h1>{{vm.video.title}}</h1>
+        <iframe width="560" height="315" ng-src="{{vm.video.url | trusted}}" id="frame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <h3>{{vm.video.channel}}</h3>
+        <p>{{vm.video.description}}</p>
+    </div>
+</div>
+
+

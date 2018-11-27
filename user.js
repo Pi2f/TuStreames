@@ -111,9 +111,9 @@ module.exports = {
 
     createToken: function(user,cb) {
         const payload = {
-            id: user._userID,
             user: {
-              mail: user.mail,
+                id: user._userID,
+                mail: user.mail,
             }
         };
   

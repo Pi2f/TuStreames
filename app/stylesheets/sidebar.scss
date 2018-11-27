@@ -32,3 +32,19 @@ $btn-size: 45px;
   font-size: 32px;
   padding-left: 10px;
 }
+
+.btn-add-playlist {
+    margin: 0.25rem;
+    background-color: #5fba7d;
+    color: #fff;
+    border: 0.25rem solid #5fba7d;
+    border-radius: 0.25rem;
+    max-width: 100%;
+    height: 100px;
+    width: 100px;
+}
+
+.btn-add-playlist:hover {
+    background-color: #28a745;
+    border: 0.25rem solid #28a745;
+}

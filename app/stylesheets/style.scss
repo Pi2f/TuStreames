@@ -13,6 +13,7 @@ $theme-colors: (
 @import "signin";
 @import "subscribe";
 @import "sidebar";
+@import "search";
 
 .navbar {
   background-color: map_get($theme-colors,"secondary");

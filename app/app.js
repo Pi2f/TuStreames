@@ -1,68 +1,96 @@
-angular
-.module('app', ['ui.router'])
-.config(function($stateProvider, $urlRouterProvider) {
-  var state = [{
-    name: 'default',
-    url: '',
-    component: 'subscribe'
-  },{
-    name: 'subscribe',
-    url: '/subscribe',
-    component: 'subscribe'
-  },
-  {
-    name: 'signin',
-    url: '/signin',
-    component: 'signin'
-  },
-  {
-    name: 'playlist',
-    url: '/playlist',
-    component: 'playlist',
-    resolve: {
-      user: function(signinService, $state){
-        var user;
-        signinService.getConnectedUser(function(err, data){
-           if(err){
-             $state.go('signin');
-           }
-           user = data;
-        });
-        return user;
+(function(){
+  angular
+  .module('app', ['ui.router'])
+  .config(config)
+  .run(run)
+  .controller('AppController', AppController);
+
+  config.$inject = ['$stateProvider'];
+  
+  function config($stateProvider) {
+    var state = [{
+      name: 'default',
+      url: '',
+      component: 'authentication',
+    },{
+      name: 'register',
+      url: '/register',
+      component: 'register',
+    },
+    {
+      name: 'authentication',
+      url: '/authentication',
+      component: 'authentication',
+    },
+    {
+      name: 'home',
+      url: '/home',
+      component: 'home',
+    },
+    {
+      name: 'search',
+      url: '/search?value',
+      component: 'search',
+    },
+    {
+      name: 'stream',
+      url: '/stream',
+      component: 'stream',
+      params: {
+        video: null,
       }
     }
-  },
-  {
-    name: 'home',
-    url: '/home',
-    component: 'home'
-  },
-  {
-    name: 'admin',
-    url: '/admin',
-    component: 'admin'
-  },
-  {
-    name: 'userlist',
-    url: '/userlist',
-    component: 'userlist'
-  },
-  {
-    name: 'search',
-    url: '/search',
-    component: 'search'
+  ];
+  
+    state.forEach(route => {
+      $stateProvider.state(route)
+    });
   }
-];
 
-  state.forEach(route => {
-    $stateProvider.state(route)
-  });
-})
-.controller('AppController', ['$scope', '$state', 'signinService', function($scope, $state, signinService){
-  $scope.user = signinService.user;
+  function run($rootScope, $state, $location, UserService, AuthenticationService){
+    
+    var token = AuthenticationService.GetToken();
+    if(token != null){
+      $rootScope.loggedIn = true;
+      UserService.GetUser(token)
+      .then(function(res){
+        $rootScope.user = res.data.user;      
+      });
+    } else {
+      $rootScope.loggedIn = false;
+    }
+    
+    var restrictedPage = $.inArray($location.path(), ['/authentication', '/register']) === -1;
+    
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options){
+      if(!$rootScope.loggedIn){        
+        $state.go('authentication');
+      }
+    });
 
-  $scope.logout = function() {
-    signinService.removeToken();
-    $state.go('signin');
+    $rootScope.$on('$locationChangeStart', function(error){
+      if(!$rootScope.loggedIn && restrictedPage){        
+        $location.path('authentication');
+      }
+    });
+
   }
-}]);
+  
+  function AppController($rootScope, $state, AuthenticationService){
+
+    $rootScope.logout = logout;
+    $rootScope.search = search;
+    
+    function search() {
+      $state.go(search);
+    }
+
+    function logout() {
+      $rootScope.user = null;
+      $rootScope.loggedIn = false;
+      AuthenticationService.RemoveToken();
+      $state.go('authentication');
+    }
+  }
+
+})();

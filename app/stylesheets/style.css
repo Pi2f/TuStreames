@@ -13950,6 +13950,48 @@ readers do not read off random characters that represent icons */
   padding-left: 10px;
 }
 
+.btn-add-playlist {
+  margin: 0.25rem;
+  background-color: #5fba7d;
+  color: #fff;
+  border: 0.25rem solid #5fba7d;
+  border-radius: 0.25rem;
+  max-width: 100%;
+  height: 100px;
+  width: 100px;
+}
+
+.btn-add-playlist:hover {
+  background-color: #28a745;
+  border: 0.25rem solid #28a745;
+}
+
+.stream-link .card-body:hover .card-img-top {
+  opacity: 0.3;
+}
+.stream-link .card-body:hover .card-title {
+  opacity: 1;
+}
+.stream-link .card-img-top {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+}
+.stream-link .card-title {
+  transition: 0.5s ease;
+  opacity: 0;
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
 .navbar {
   background-color: #1B1B1B;
 }
