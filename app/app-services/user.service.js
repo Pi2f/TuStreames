@@ -12,12 +12,11 @@
         return service;
         
         function GetUser(token) {
-            return $http.get('/user/'+token)
-            .then(handleSuccess,handleError);
+            return $http.get('/api/user/'+token).then(handleSuccess, handleError);
         }
 
         function CreateUser(form, cb){
-            return $http.post('/register',form)
+            return $http.post('/api/register',form)
             .then(handleSuccess,handleError);
         }
     }

@@ -1,21 +1,4 @@
-<div class="d-flex flex-row h-100">
-  <div id="sidebar" class="align-self-center px-2">
-    <ul class="list-unstyled components h-100 py-4" ng-init="vm.getPlaylists()">              
-      <li ng-repeat="playlist in vm.playlists">
-        {{ playlist.name }}
-        <a href="#" class="d-block mb-4 h-100">
-          <img class="img-fluid img-thumbnail" src="http://placehold.it/100x100" alt="">
-        </a>
-      </li>
-      <li>  
-        <a href="#" class="d-block mb-4 h-100">
-          <button type="button" class="btn-add-playlist" data-toggle="modal" data-target="#modal"> 
-            <i class="fas fa-folder-plus fa-3x"></i>
-          </button>
-        </a>
-      </li>
-    </ul>
-  </div>
+<div class="d-flex flex-row">
   <div class="align-self-center" ng-click="vm.toggle();">
     <div class="btn-sidebar">
       <span ng-click="chevron = !chevron">
@@ -23,20 +6,40 @@
       </span>
     </div>
   </div>
+  <div id="sidebar" class="align-self-center px-2 h-100">
+    <ul class="list-unstyled text-center h-100 mb-0 p-3 d-flex flex-column" ng-init="vm.getPlaylists()">
+      <li ng-repeat="playlist in vm.playlists" ui-sref="playlist({playlist: playlist})">
+        {{ playlist.name }}
+        <a href="#" class="d-block mb-4 h-100">
+          <img class="img-fluid img-thumbnail" src="{{ playlist.videos[0] ? playlist.videos[0].thumbnails.small : 'http://placehold.it/120x90'}}"
+            alt="">
+        </a>
+      </li>
+      <li>
+        <a href="#" class="d-block mb-4 h-100">
+          <button type="button" class="btn-add-playlist" data-toggle="modal" data-target="#newPlaylist">
+            <i class="fas fa-folder-plus fa-3x"></i>
+          </button>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
 
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="newPlaylist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content modal-sm">
       <div class="modal-body">
         <form class="my-2 my-lg-0" ng-submit="vm.addPlaylist()">
-          <div class="form-group">
-            <label>Nouvelle playlist :</label>
-            <input class="form-control mr-sm-2" placeholder="Name" type="text" ng-model="vm.name">
+          <div class="row justify-content-around">
+            <div class="form-group">
+              <label>Nouvelle playlist</label>
+              <input class="form-control mr-sm-2" placeholder="Name" type="text" ng-model="vm.name">
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Créer</button>
           </div>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
         </form>
       </div>
     </div>

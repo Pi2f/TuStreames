@@ -9,23 +9,18 @@
         service.Search = Search;
         return service;
         
-        function Search(keyword, cb) {
-            var req = {
-                keyword : keyword
-            };
-            $http.post('/search', req)
+        function Search(data, cb) {
+            $http.post('/api/search', data)
                 .then(function(resp) {
                     cb(resp.data);
-                }, function(resp) {
-                    alert("Erreur");
-                });
+                }, handleError);
         };
     
     }
 
-    function handleSuccess(res){
-        return res;
-    }
+    // function handleSuccess(res){
+    //     return res;
+    // }
 
     function handleError(error){
         return { success: false, message: error };

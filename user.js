@@ -1,14 +1,8 @@
-const mongoose = require('mongoose');
 const uuidv4 = require('uuid/v4');
-const config = require('./config.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-mongoose.connect(config.urlDB, function(err) {
-    if (err) { throw err; } else {
-        console.log('Mongo: Database connected');
-    }
-  });
+const mongoose = require('mongoose');
+const config = require('./config.js');
 
 const userSchema = new mongoose.Schema({
     _userID: {
@@ -30,6 +24,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+        type: Array,
+        required: true,
+        default: ['*'],
+    }
 });
 
 userSchema.pre('save', function (next) {
@@ -114,6 +113,7 @@ module.exports = {
             user: {
                 id: user._userID,
                 mail: user.mail,
+                role: user.role,
             }
         };
   
@@ -133,7 +133,7 @@ module.exports = {
             jwt.verify(token, config.secret, function(err, out){
                 if(err){
                     cb(err);
-                } else {
+                } else {                    
                     cb(null,out);
                 }
             });

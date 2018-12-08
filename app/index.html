@@ -1,77 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Tu Streames !</title>
-    <link rel="stylesheet" href="app/stylesheets/style.css" type="text/css">
-  </head>
-  <body ng-app="app" ng-controller="AppController">
-    <nav class="navbar navbar-expand-lg">
-          <a class="navbar-brand" href="#">Tu Streames !</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
 
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto"> 
-          <li class="nav-item" ng-if='!user'>
-            <a class="nav-link" ui-sref="register" ui-sref-active="active">Subscribe<span class="sr-only">(current)</span></a>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Tu Streames !</title>
+  <link rel="stylesheet" href="app/stylesheets/style.css" type="text/css">
+</head>
+
+<body ng-app="app" ng-controller="AppController as vm">
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">Tu Streames !</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" ng-if="!vm.currentUser" ui-sref="register" ui-sref-active="active">Subscribe<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" ng-if="!vm.currentUser" ui-sref="authentication" ui-sref-active="active">Sign in</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" placeholder="Search" type="text" ng-model="vm.value">
+        <button class="btn btn-primary my-2 my-sm-0" type="button" ui-sref="search({value: vm.value})">Search</button>
+      </form>
+      <div class="pull-right">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" ng-if="vm.currentUser.isAdmin" ui-sref="admin" ui-sref-active="active">Admin</a>
           </li>
-          <li class="nav-item" ng-if='!user'>
-            <a class="nav-link" ui-sref="authentication" ui-sref-active="active">Sign in</a>
+          <li class="nav-item">
+            <a ng-if="!!vm.currentUser" href="" class="nav-link" ng-click="vm.logout()">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" ng-if="user">
-          <input class="form-control mr-sm-2" placeholder="Search" type="text" ng-model="value">
-          <button class="btn btn-primary my-2 my-sm-0" type="submit" ui-sref="search({value: value})">Search</button>
-        </form>
-        <div class="pull-right">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item" ng-if="user.admin">
-              <a class="nav-link" ui-sref="admin" ui-sref-active="active">Admin</a>
-            </li>
-            <li class="nav-item" ng-if="user">
-              <a href="" class="nav-link" ng-click="logout()">
-                <i class="fas fa-sign-out-alt"></i>
-              </a>
-            </li>  
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="fluid-container">
-            <div class="row flex-xl-no-wrap mx-0">
-              <div class="sidebar" ng-if="user">
-                <sidebar></sidebar>
-              </div>
-              <div class="col py-md-3 content">
-                <div ui-view> </div>
-              </div>
-            </div>
       </div>
     </div>
+  </nav>
 
-    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
-    <script type="module" src="node_modules/popper.js/dist/popper-utils.min.js"></script>
-    <script type="module" src="node_modules/popper.js/dist/popper.min.js"></script>
-    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
-    <script type="text/javascript" src="node_modules/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
-    <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/app-components/register.component.js"></script>
-    <script type="text/javascript" src="app/app-components/authentication.component.js"></script>
-    <script type="text/javascript" src="app/app-components/sidebar.component.js"></script>
-    <script type="text/javascript" src="app/app-components/home.component.js"></script>
-    <script type="text/javascript" src="app/app-components/preview-playlist.component.js"></script>
-    <script type="text/javascript" src="app/app-components/historique.component.js"></script>
-    <script type="text/javascript" src="app/app-components/search.component.js"></script>
-    <script type="text/javascript" src="app/app-components/stream.component.js"></script>
-    <script type="text/javascript" src="app/app-services/authentication.service.js"></script>
-    <script type="text/javascript" src="app/app-services/user.service.js"></script>
-    <script type="text/javascript" src="app/app-services/playlist.service.js"></script>
-    <script type="text/javascript" src="app/app-services/search.service.js"></script>
-  </body>
+  <div class="fluid-container">
+    <div class="row flex-xl-no-wrap mx-0">
+      <div class="sidebar">
+        <sidebar ng-if=vm.currentUser></sidebar>
+      </div>
+      <div class="col py-md-3 content">
+        <div ui-view> </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+  <script type="module" src="node_modules/popper.js/dist/popper-utils.min.js"></script>
+  <script type="module" src="node_modules/popper.js/dist/popper.min.js"></script>
+  <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+  <script type="text/javascript" src="node_modules/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+  <script type="text/javascript" src="app/app.js"></script>
+  <script type="text/javascript" src="app/app-components/register.component.js"></script>
+  <script type="text/javascript" src="app/app-components/authentication.component.js"></script>
+  <script type="text/javascript" src="app/app-components/sidebar.component.js"></script>
+  <script type="text/javascript" src="app/app-components/home.component.js"></script>
+  <script type="text/javascript" src="app/app-components/log.component.js"></script>
+  <script type="text/javascript" src="app/app-components/search.component.js"></script>
+  <script type="text/javascript" src="app/app-components/stream.component.js"></script>
+  <script type="text/javascript" src="app/app-components/playlist-preview.component.js"></script>
+  <script type="text/javascript" src="app/app-components/playlist.component.js"></script>
+  <script type="text/javascript" src="app/app-components/admin.component.js"></script>
+  
+  <script type="text/javascript" src="app/app-services/authentication.service.js"></script>
+  <script type="text/javascript" src="app/app-services/session.service.js"></script>
+  <script type="text/javascript" src="app/app-services/user.service.js"></script>
+  <script type="text/javascript" src="app/app-services/playlist.service.js"></script>
+  <script type="text/javascript" src="app/app-services/search.service.js"></script>
+  <script type="text/javascript" src="app/app-services/log.service.js"></script>
+  <script type="text/javascript" src="app/auth-interceptor.js"></script>
+</body>
+
 </html>

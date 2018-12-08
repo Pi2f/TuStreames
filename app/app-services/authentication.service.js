@@ -2,41 +2,38 @@
     'use strict';
     angular.module('app').factory('AuthenticationService', AuthenticationService);
     
-    AuthenticationService.$inject = ['$http', '$rootScope', 'UserService'];
-    function AuthenticationService($http, $rootScope, UserService) { 
+    AuthenticationService.$inject = ['$http', 'SessionService', 'UserService'];
+    function AuthenticationService($http, SessionService) { 
         
         var service = {};
         service.Login = Login;
-        service.StoreToken = StoreToken;
-        service.GetToken = GetToken;
-        service.RemoveToken = RemoveToken;
+        service.isAuthenticated = isAuthenticated;
+        service.Logout = Logout;
 
         return service;
 
-        function Login(mail, password, cb) {
-            return $http.post('/authenticate',{mail: mail, password: password})
-            .then(handleSuccess,handleError); 
-        }
-        
-        function StoreToken(token){
-            localStorage.setItem('tuStreamesToken', token)
+        function Login(mail, password) {
+            return $http.post('/api/authenticate',{mail: mail, password: password})
+            .then(function(response){
+                var session = {
+                    user: response.data.user,
+                    token: response.data.token
+                }
+                SessionService.CreateSession(session);
+                return session;
+            }); 
         }
 
-        function RemoveToken(){
-            localStorage.removeItem('tuStreamesToken');        
+        function isAuthenticated() {
+            return SessionService.GetSession().then(function(success){
+                if(success){
+                    return SessionService.user;
+                }
+            });
         }
 
-        function GetToken(){
-            return localStorage.getItem('tuStreamesToken');
-        }
-        
-
-        function handleSuccess(res){
-            return res;
-        }
-    
-        function handleError(error){
-            return { success: false, message: error };
+        function Logout() {
+            SessionService.DeleteSession();
         }
     }
 })();

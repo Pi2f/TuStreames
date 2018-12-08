@@ -1,22 +1,22 @@
 .sidebar {
-    transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
+    direction: rtl;
     transform-origin: center left;
-    ul {
-        overflow: auto;
-    }
-}
-
-#sidebar {
-    height: calc(100vh);
-    min-width: 150px;
-    max-width: 150px;
-    background-color: map_get($theme-colors,"primary");
-    color: map_get($theme-colors,"secondary");
+    transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
+    height: calc(90vh);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sidebar.active {
-    margin-left: -150px;
+    margin-left: -181px;
 }
+
+#sidebar {
+    background-color: map_get($theme-colors,"primary");
+    color: map_get($theme-colors,"secondary");
+    min-width: 181px;
+}
+
 
 $btn-size: 45px;
 .btn-sidebar{

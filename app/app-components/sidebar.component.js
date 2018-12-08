@@ -4,33 +4,34 @@
   angular.module('app').component('sidebar', {
     templateUrl: 'app/views/sidebar.view.html',
     controller: SidebarCtrl,
-    controllerAs: 'vm'
+    controllerAs: 'vm',
   });
 
-  var chevron = true;
-  SidebarCtrl.$inject = ['$rootScope', 'PlaylistService'];
+  SidebarCtrl.$inject = ['PlaylistService', 'SessionService'];
 
-  function SidebarCtrl($rootScope, PlaylistService) {
+  function SidebarCtrl(PlaylistService, SessionService) {
     var vm = this;
     vm.toggle = toggle;
     vm.addPlaylist = addPlaylist;
     vm.getPlaylists = getPlaylists;
     vm.playlists = [];
+    vm.currentUser = SessionService.user;
     
     function toggle(){
       $('.sidebar').toggleClass('active');
       $(vm).toggleClass('active');
+      getPlaylists();
     };
 
-    function addPlaylist(){ 
-      $('#modal').modal('hide'); 
-      PlaylistService.CreatePlaylist({name: vm.name, user: $rootScope.user}).then(function(){
+    function addPlaylist(){  
+      PlaylistService.CreatePlaylist({name: vm.name, user: vm.currentUser}).then(function(){
+        $('#newPlaylist').modal('hide');
         getPlaylists();
       });
     }
 
     function getPlaylists(){  
-      PlaylistService.GetPlaylistsByUserId($rootScope.user.id).then(function(resp){
+      PlaylistService.GetPlaylistsByUserId(vm.currentUser.id).then(function(resp){
         vm.playlists = resp.data;
       });
     }

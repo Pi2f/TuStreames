@@ -1,10 +1,38 @@
 <div class="row">
     <div class="col">
         <h1>{{vm.video.title}}</h1>
-        <iframe width="560" height="315" ng-src="{{vm.video.url | trusted}}" id="frame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe cclass="embed-responsive-item" ng-src="{{vm.video.url | trusted}}" id="frame" frameborder="0" allow="autoplay; encrypted-media"
+                allowfullscreen></iframe>
+        </div>
         <h3>{{vm.video.channel}}</h3>
         <p>{{vm.video.description}}</p>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addToPlaylist">Ajouter à une playlist</button>
     </div>
 </div>
-
-
+<div class="modal fade" id="addToPlaylist" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-sm">
+            <div class="modal-body">
+                <form class="my-2 my-lg-0" ng-submit="vm.addToPlaylist(selected)">
+                    <div class="row justify-content-around">
+                        <div class="form-group">
+                            <label>Ajouter la vidéo à une playlist :</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text">Playlist</label>
+                                </div>
+                                <select ng-options="playlist.name for playlist in vm.playlists" ng-model="selected">
+                                    <option value="">Choisir une playlist</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

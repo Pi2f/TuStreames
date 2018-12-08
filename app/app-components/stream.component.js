@@ -8,12 +8,29 @@
         controllerAs: 'vm'
     }).filter('trusted', StreamFilter);
 
-    StreamCtrl.$inject = ['$stateParams'];
-    function StreamCtrl($stateParams){
-        console.log($stateParams)
+    StreamCtrl.$inject = ['$stateParams','PlaylistService'];
+    function StreamCtrl($stateParams, PlaylistService){
         var vm = this;
         vm.video = $stateParams.video;
         vm.video.url = "https://www.youtube.com/embed/" + vm.video.id;
+        vm.addToPlaylist = addToPlaylist;
+
+        $('#addToPlaylist').on('shown.bs.modal', function () {
+          getPlaylists();
+        })
+
+        function getPlaylists(){  
+          PlaylistService.GetPlaylistsByUserId().then(function(resp){
+            vm.playlists = resp.data;
+          });
+        }
+
+        function addToPlaylist(playlist) {
+          playlist.videos.push(vm.video);
+          PlaylistService.UpdatePlaylist(playlist).then(function(){
+            $('#addToPlaylist').modal('hide');
+          });
+        }
     }
 
     StreamConfig.$inject == ['$sceDelegateProvider'];
@@ -24,7 +41,6 @@
         'localhost:3000',
         'https://www.youtube-nocookie.com/**'
       ]);
-    
     }
 
     StreamFilter.$inject = ['$sce'];

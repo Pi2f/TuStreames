@@ -7,23 +7,30 @@
         controllerAs: 'vm'
     });
 
-    SearchCtrl.$inject = ['SearchService', '$stateParams'];
-    function SearchCtrl(SearchService, $stateParams){
+    SearchCtrl.$inject = ['$rootScope','$stateParams','SearchService', 'SessionService'];
+    function SearchCtrl($rootScope, $stateParams, SearchService,SessionService){
         var vm = this;
         vm.videoSet = [];
         search($stateParams);
         
         function search() {
           if ($stateParams.value) {
-            SearchService.Search($stateParams.value, function(resp) {
+            SearchService.Search({
+              userID: SessionService.user,
+              keyword: $stateParams.value,
+            }, function(resp) {
               if (resp.success == true) {                
-                for (var i = 0; i < resp.data.items.length; i++) {
+                for (var i = 0; i < resp.data.items.length; i++) {            
                   var video = {
                     id : resp.data.items[i].id.videoId,
                     description : resp.data.items[i].snippet.description,
                     channel : resp.data.items[i].snippet.channelTitle,
                     title : resp.data.items[i].snippet.title,
-                    thumbnail : resp.data.items[i].snippet.thumbnails.default.url
+                    thumbnails : {
+                      small: resp.data.items[i].snippet.thumbnails.default.url,
+                      medium: resp.data.items[i].snippet.thumbnails.medium.url,
+                      high: resp.data.items[i].snippet.thumbnails.high.url
+                    }
                   }
                   vm.videoSet.push(video);
                 }

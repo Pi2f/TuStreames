@@ -1,0 +1,60 @@
+<div ng-init="vm.getPlaylists()">
+  <div class="card mb-5 mb-lg-0">
+    <div class="card-header bg-primary text-secondary">
+      <h5>Playlists</h5>
+    </div>
+    <div class="card" ng-repeat="playlist in vm.playlists">
+      <div class="playlist-link">
+        <div class="card-body">
+          <a ui-sref="playlist({playlist: playlist})">
+            <div class="row">
+              <div class="col-md-7 px-2">
+                <img class="img-fluid card-img-top rounded mb-md-0" src="{{ playlist.videos[0] ? playlist.videos[0].thumbnails.medium : vm.thumbnailDefault }}"
+                  alt="">
+                <div class="card-title p-5">
+                  <h1>{{playlist.name}}</h1>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="row">
+                  <div class="col-6 px-1">
+                    <img class="img-fluid rounded mb-2" src="{{ playlist.videos[1] ? playlist.videos[1].thumbnails.small : vm.thumbnailDefault }}"
+                      alt="">
+                    <img class="img-fluid rounded" src="{{ playlist.videos[2] ? playlist.videos[2].thumbnails.small : vm.thumbnailDefault }}"
+                      alt="">
+                  </div>
+                  <div class="col-6 px-1">
+                    <img class="img-fluid rounded mb-2" src="{{ playlist.videos[3] ? playlist.videos[3].thumbnails.small : vm.thumbnailDefault }}"
+                      alt="">
+                    <img class="img-fluid rounded" src="{{ playlist.videos[4] ? playlist.videos[4].thumbnails.small : vm.thumbnailDefault }}"
+                      alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#removePlaylist"
+            data-playlist="{{playlist}}">Supprimer la playlist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="removePlaylist" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-sm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Voulez-vous supprimer la playlist :</label>
+        </div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.deletePlaylist(playlist)">Yes</button>
+
+      </div>
+    </div>
+  </div>
+</div>
