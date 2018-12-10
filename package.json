@@ -1,6 +1,10 @@
 {
   "name": "tu-streames",
   "version": "1.0.0",
+  "egnines": {
+    "yarn": "1.10.1",
+    "node": "8.11.1"
+  },
   "description": "Application de streaming de vidéos youtube ou vimeo",
   "main": "server.js",
   "scripts": {
