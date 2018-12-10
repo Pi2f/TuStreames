@@ -12,7 +12,7 @@
     function StreamCtrl($stateParams, PlaylistService){
         var vm = this;
         vm.video = $stateParams.video;
-        vm.video.url = "https://www.youtube.com/embed/" + vm.video.id;
+        vm.video.url = vm.video.embedUrl + vm.video.id;
         vm.addToPlaylist = addToPlaylist;
 
         $('#addToPlaylist').on('shown.bs.modal', function () {

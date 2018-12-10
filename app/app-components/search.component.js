@@ -7,37 +7,19 @@
         controllerAs: 'vm'
     });
 
-    SearchCtrl.$inject = ['$rootScope','$stateParams','SearchService', 'SessionService'];
-    function SearchCtrl($rootScope, $stateParams, SearchService,SessionService){
+    SearchCtrl.$inject = ['$stateParams','SearchService', 'SessionService'];
+    function SearchCtrl($stateParams, SearchService,SessionService){
         var vm = this;
         vm.videoSet = [];
-        search($stateParams);
+        search();
         
         function search() {
           if ($stateParams.value) {
             SearchService.Search({
-              userID: SessionService.user,
+              user: SessionService.user,
               keyword: $stateParams.value,
-            }, function(resp) {
-              if (resp.success == true) {                
-                for (var i = 0; i < resp.data.items.length; i++) {            
-                  var video = {
-                    id : resp.data.items[i].id.videoId,
-                    description : resp.data.items[i].snippet.description,
-                    channel : resp.data.items[i].snippet.channelTitle,
-                    title : resp.data.items[i].snippet.title,
-                    thumbnails : {
-                      small: resp.data.items[i].snippet.thumbnails.default.url,
-                      medium: resp.data.items[i].snippet.thumbnails.medium.url,
-                      high: resp.data.items[i].snippet.thumbnails.high.url
-                    }
-                  }
-                  vm.videoSet.push(video);
-                }
-              } else {
-                alert("recherche échouée")
-              }
-            });
+              api: $stateParams.api,
+            }).then((videoSet) => vm.videoSet = videoSet);
           } else {
             alert("Aucun mot clef renseigné")
           }

@@ -2,17 +2,17 @@
     'use strict';
     angular.module('app').factory('UserService', UserService);
 
-    UserService.$inject = ['$http'];
+    UserService.$inject = ['$http', 'SessionService'];
 
-    function UserService($http) {
+    function UserService($http, SessionService) {
         var service = {};
-        service.GetUser = GetUser;
         service.CreateUser = CreateUser;
+        service.GetUsers = GetUsers;
 
         return service;
-        
-        function GetUser(token) {
-            return $http.get('/api/user/'+token).then(handleSuccess, handleError);
+
+        function GetUsers(){
+            return $http.get('/api/users/'+SessionService.user.id).then(handleSuccess, handleError);
         }
 
         function CreateUser(form, cb){

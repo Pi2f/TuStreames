@@ -47,7 +47,7 @@
     },
     {
       name: 'search',
-      url: '/search?value',
+      url: '/search?value&api',
       component: 'search',
       data: {
         authorizedRoles: USER_ROLES.all,
@@ -130,11 +130,14 @@
   
   function AppController($scope, $state, USER_ROLES, AuthenticationService, AUTH_EVENTS){
     var vm = this;
+    vm.selected = "YouTube";
+    vm.unselected = "Vimeo";
     vm.currentUser = null;
     vm.userRoles = USER_ROLES;
     vm.setCurrentUser = setCurrentUser;
     vm.logout = logout;
     vm.search = search;
+    vm.toggle = toggle;
     
     $scope.$on(AUTH_EVENTS.loginSuccess, function (event, user) {
       console.log("LoginSuccess");
@@ -182,6 +185,13 @@
       vm.currentUser = null;
       $state.go('authentication');
       AuthenticationService.Logout();
+    }
+
+    function toggle(){
+      const aux = vm.selected;
+      vm.selected = vm.unselected;
+      vm.unselected = aux;
+      console.log(vm.selected);
     }
   }
 

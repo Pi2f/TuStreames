@@ -42,3 +42,7 @@ body {
   z-index: 1000;
   overflow: auto;
 }
+
+.dropdown-menu{
+  z-index: $zindex-fixed;
+}

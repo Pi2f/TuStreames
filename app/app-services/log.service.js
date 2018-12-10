@@ -6,16 +6,24 @@
 
     function LogService($http,SessionService) {
         var service = {};
-        service.GetSearchLog = GetSearchLog;
-        service.DeleteAllSearchLogs = DeleteAllSearchLogs;
+        service.GetLogs = GetLogs;
+        service.DeleteLogs = DeleteLogs;
         return service;
 
-        function GetSearchLog(){
-            return $http.get('/api/log/search/'+SessionService.user.id).then(handleSuccess, handleError);
+        function GetLogs(isPageAdmin) {
+            if(isPageAdmin){
+                return  $http.get('/api/log/'+SessionService.user.id).then(handleSuccess, handleError);
+            } else {
+                return $http.get('/api/log/search/'+SessionService.user.id).then(handleSuccess, handleError);
+            }
         }
     
-        function DeleteAllSearchLogs() {
-            return $http.delete('/api/log/search/'+SessionService.user.id).then(handleSuccess, handleError);
+        function DeleteLogs(isPageAdmin) {
+            if(isPageAdmin){
+                return  $http.delete('/api/log/'+SessionService.user.id).then(handleSuccess, handleError);
+            } else {
+                return $http.delete('/api/log/search/'+SessionService.user.id).then(handleSuccess, handleError);
+            }
         }
     }
 

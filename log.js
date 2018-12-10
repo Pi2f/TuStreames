@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const type = {
     SEARCH: 'Search',
-    AUTH: 'Authentification',
+    AUTH: 'Auth',
 }
 
 const logSchema = new mongoose.Schema({
@@ -63,8 +63,32 @@ module.exports = {
         const logData = new logModel({
             _logID: uuidv4(),
             type: type.SEARCH,
-            userID: data.userID,
+            userID: data.user.id,
             message: data.keyword,
+        });
+        logData.save(function(err){
+            console.log(err)
+        });
+    },
+
+    addLoginLog: function(data, cb){
+        const logData = new logModel({
+            _logID: uuidv4(),
+            type: type.AUTH,
+            userID: data._userID,
+            message: "Connexion",
+        });
+        logData.save(function(err){
+            console.log(err)
+        });
+    },
+
+    addLogoutLog: function(data, cb){
+        const logData = new logModel({
+            _logID: uuidv4(),
+            type: type.AUTH,
+            userID: data,
+            message: "Deconnexion",
         });
         logData.save(function(err){
             console.log(err)
@@ -79,6 +103,28 @@ module.exports = {
             if(err) cb(err);
             else cb(null, logs);
         })
+    },
+
+    getAllLogs: function(cb){
+        logModel.find({
+        }, function(err, logs) {
+            if(err) cb(err);
+            else cb(null, logs);
+        })
+    },
+
+    deleteAllAuthLogs: function(cb){
+        logModel.find({type: type.AUTH}, 
+            function(err, logs){
+                logs.forEach(function(log){
+                    log.remove(function(err){
+                        console.log(err);   
+                    });
+                })
+                if(err) cb(err);
+                else cb(null, logs);
+            }
+        );
     },
 
     deleteAllSearchLogs: function(id, cb){

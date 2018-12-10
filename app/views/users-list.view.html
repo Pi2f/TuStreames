@@ -1,0 +1,17 @@
+<div class="card mb-5 mb-lg-0" ng-init="vm.getUsers()">
+    <div class="card-header bg-primary text-secondary d-flex justify-content-between">
+        <div>
+            Utilisateurs
+        </div>
+    </div>
+    <div class="card-body">   
+        <table class="table">
+            <tbody>
+                <tr ng-repeat="user in vm.users">
+                    <td class="py-1">{{ user.username }}</td>
+                    <td class="py-1">{{ user.role }}</td>
+                </tr>                           
+            </tbody>
+        </table>
+    </div>
+</div>

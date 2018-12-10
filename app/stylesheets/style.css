@@ -13922,6 +13922,7 @@ readers do not read off random characters that represent icons */
   transition: all 0.6s cubic-bezier(0.945, 0.02, 0.27, 0.665);
   height: calc(90vh);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar.active {
@@ -14144,6 +14145,10 @@ body {
   position: relative;
   z-index: 1000;
   overflow: auto;
+}
+
+.dropdown-menu {
+  z-index: 1030;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -33,7 +33,9 @@
         }
 
         function Logout() {
-            SessionService.DeleteSession();
+            return $http.get('/api/logout/'+SessionService.user.id).then(function(){
+                SessionService.DeleteSession();
+            });
         }
     }
 })();

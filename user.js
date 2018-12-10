@@ -62,6 +62,14 @@ function checkForExistingUser(mail, cb){
 const userModel = mongoose.model('Users', userSchema);
 
 module.exports = {
+    isAdmin: function(data, cb){
+        return userModel.findOne({
+            _userID: data,
+        }, function (err, user) {
+           cb(user.role.indexOf('admin') !== -1);
+        })
+    },
+
     subscribe: function(data, cb){
         if(isStrongPassword(data.password) && isValidMail(data.mail)){
             checkForExistingUser(data.mail, function(result){
@@ -138,5 +146,12 @@ module.exports = {
                 }
             });
         } else cb(new Error("Invalid Token"));
+    },
+
+    getAll: function(cb){
+        userModel.find({}, function(err, users) {
+            if(err) cb(err);
+            else cb(null, users);
+        })
     }
 }

@@ -9,11 +9,12 @@
         service.Search = Search;
         return service;
         
-        function Search(data, cb) {
-            $http.post('/api/search', data)
-                .then(function(resp) {
-                    cb(resp.data);
-                }, handleError);
+        function Search(data) {
+            return $http.post('/api/search', data)
+                .then(function(resp) {                
+                    return resp.data;
+                }
+                ,handleError);
         };
     
     }

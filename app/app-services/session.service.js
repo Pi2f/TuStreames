@@ -1,10 +1,10 @@
 (function(){
     'use strict';
     angular.module('app').factory('SessionService', SessionService);
-
-    SessionService.$inject = ['UserService']
     
-    function SessionService(UserService) { 
+    SessionService.$inject = ['$http'];
+
+    function SessionService($http) { 
         var service = {};
         service.DeleteSession = DeleteSession;
         service.CreateSession = CreateSession;
@@ -13,8 +13,12 @@
         service.GetToken = GetToken;
         service.GetSession = GetSession;
         service.user = null;
-
+        
         return service;
+        
+        function GetToken(){
+            return localStorage.getItem('tuStreamesToken');
+        }
 
         function StoreToken(token){
             localStorage.setItem('tuStreamesToken', token)
@@ -27,7 +31,7 @@
         function GetSession(){
             var token = GetToken();
             if(token != null) {
-                return UserService.GetUser(token)
+                return $http.get('/api/user/'+token)
                 .then(function(response){
                     var session = {
                         user: response.data.user,
@@ -45,9 +49,6 @@
             }
         }
 
-        function GetToken(){
-            return localStorage.getItem('tuStreamesToken');
-        }
 
         function CreateSession(session) {
             service.user = session.user;
