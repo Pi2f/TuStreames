@@ -1,7 +1,7 @@
 {
   "name": "tu-streames",
   "version": "1.0.0",
-  "egnines": {
+  "engines": {
     "yarn": "1.10.1",
     "node": "8.11.1"
   },
