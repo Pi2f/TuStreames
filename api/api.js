@@ -1,97 +1,121 @@
 const express = require('express');
 const router = express.Router();
-const user = require('../user.js');
-const playlist = require('../playlist.js');
-const log = require('../log.js');
+const log = require('../log/log.js');
 const youtubeAPI = require('./youtube-api.js');
 const vimeoAPI = require('./vimeo-api.js');
+const got = require('got');
+
+const userApiUrl = "http://localhost:3001/";
+const playlistApiUrl ="http://localhost:3003/";
+const logApiUrl = "http://localhost:3006/"
 
 router.get('/user/:token', function(req, res) {
-    user.getConnectedUser(req.params.token, function(err, user){
-        if(err){
-            res.status(500).send(err);
-        } else {
-            res.status(200).send(JSON.stringify(user));
-        }
+    got('/user/'+req.params.token, { 
+        baseUrl: userApiUrl, 
+        json: true })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
+    
 });
 
 router.get('/users/:id', function(req, res) {
-    user.isAdmin(req.params.id, function(isAdmin){
-        if(isAdmin){
-            user.getAll(function(err, users){
-                if(err) throw new Error("Broke");
-                else res.status(200).send(users);
-            });
-        }
+    got('/users/'+req.params.id, { 
+        baseUrl: userApiUrl, 
+        json: true })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.post('/authenticate', function(req, res){
-    if(req.body.mail && req.body.password){
-        user.signin(req.body.mail, req.body.password, function(err, data){
-            if(err) res.status(401).send();
-            else {
-                log.addLoginLog(data);
-                user.createToken(data, function(response){
-                    res.status(200).send(JSON.stringify(response));
-                });
-            }
-        });
-    }
-});
-
-router.get('/logout/:id', function(req, res){
-    log.addLogoutLog(req.params.id, function(err){
-        if(err) res.status(500).send(err);
-        else res.status(200).send();
+    got('/authenticate', { 
+        baseUrl: userApiUrl, 
+        json: true,
+        body: req.body })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
-})
+});
 
 router.post('/register', function(req,res) {
-    if(!user.isExistingUser){
-        user.subscribe(req.body, function(err){
-            if(err){
-                res.status(500).send({
-                    error: err
-                })
-            }
-            res.status(201).send();
-        });
-    }
+    got('/register', { 
+        baseUrl: userApiUrl, 
+        json: true,
+        body: req.body })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
+    });
 });
 
+
+
 router.post('/playlist', function(req,res) {
-    playlist.add(req.body, function(err){
-        if(err) res.status(500).send();
-        else res.status(201).send();
+    got('/playlist', { 
+        baseUrl: playlistApiUrl, 
+        json: true,
+        body: req.body })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.get('/playlist/:id', function(req, res) {  
-    playlist.getByUserId(req.params.id, function(err, playlists){
-        if(err) res.status(500).send(err);
-        else res.status(200).send(JSON.stringify(playlists));
+    got('/playlist/'+req.params.id, { 
+        baseUrl: playlistApiUrl, 
+        json: true })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.post('/playlist/video', function(req, res) {
-    playlist.updatePlaylist(req.body, function(err){
-        if(err) res.status(500).send(err);
-        else res.status(200).send();
+    got('/playlist/video', { 
+        baseUrl: playlistApiUrl, 
+        json: true,
+        body: req.body })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.delete('/playlist/:id', function(req, res) {
-    playlist.deletePlaylist(req.params.id, function(err){
-        if(err) res.status(500).send(err);
-        else res.status(200).send();
+    got('/playlist/'+req.params.id, { 
+        baseUrl: playlistApiUrl, 
+        json: true,
+        method: 'DELETE' })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.post("/search", function(req, res) {
     if(req.body.api == "YouTube"){
-       youtubeAPI.search(req,res);
+        youtubeAPI.search(req,res);
     }
 
     if(req.body.api == "Vimeo"){
@@ -100,38 +124,64 @@ router.post("/search", function(req, res) {
 });
 
 router.get("/log/search/:id", function(req, res) {
-    log.getSearchLogByUserId(req.params.id, function(err, logs){
-        if(err) res.status(500).send(err);
-        else res.status(200).send(JSON.stringify(logs));
+    got('/log/search'+req.params.id, { 
+        baseUrl: logApiUrl, 
+        json: true })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.get("/log/:id", function(req, res) {
-    user.isAdmin(req.params.id, function(isAdmin){
-        if(isAdmin){
-            log.getAllLogs(function(err, logs){
-                if(err) res.status(500).send(err);
-                else res.status(200).send(JSON.stringify(logs));
-            });
-        }
+    got('/log/'+req.params.id, { 
+        baseUrl: logApiUrl, 
+        json: true })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.delete('/log/search/:id', function(req, res) {
-    log.deleteAllSearchLogs(req.params.id, function(err){
-        if(err) res.status(500).send(err);
-        else res.status(200).send();
+    got('/log/search/'+req.params.id, { 
+        baseUrl: logApiUrl, 
+        json: true,
+        method: 'DELETE' })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 
 router.delete('/log/:id', function(req, res) {
-    user.isAdmin(req.params.id, function(isAdmin){
-        if(isAdmin){
-            log.deleteAllAuthLogs(function(err){
-                if(err) res.status(500).send(err);
-                else res.status(200).send();
-            });
-        }
+    got('/log/'+req.params.id, { 
+        baseUrl: logApiUrl, 
+        json: true,
+        method: 'DELETE' })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
+    });
+});
+
+router.get('/logout/:id', function(req, res){
+    got('/logout/'+req.params.id, { 
+        baseUrl: logApiUrl, 
+        json: true })
+    .then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
     });
 });
 

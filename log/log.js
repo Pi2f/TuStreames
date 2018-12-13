@@ -91,7 +91,9 @@ module.exports = {
             message: "Deconnexion",
         });
         logData.save(function(err){
-            console.log(err)
+            if(err){
+                console.log(err)
+            }
         });
     },
 
@@ -118,7 +120,9 @@ module.exports = {
             function(err, logs){
                 logs.forEach(function(log){
                     log.remove(function(err){
-                        console.log(err);   
+                        if(err){
+                            console.log(err);   
+                        }
                     });
                 })
                 if(err) cb(err);
@@ -136,7 +140,9 @@ module.exports = {
             function(err, logs){
                 logs.forEach(function(log){
                     log.remove(function(err){
-                        console.log(err);   
+                        if(err){
+                            console.log(err);   
+                        }
                     });
                 })
                 if(err) cb(err);

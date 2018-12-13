@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
         type: Array,
         required: true,
         default: ['*'],
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
     }
 });
 
@@ -100,7 +104,6 @@ module.exports = {
                     cb(err);
                 } else if (!user){
                     const err = new Error("L'utilisateur n'existe pas");
-                    error.status = 401;
                     return cb(err);
                 } else {
                     bcrypt.compare(password, user.password, function(err, result) {
@@ -108,8 +111,7 @@ module.exports = {
                             return cb(null, user);
                         } else {                
                             return cb(new Error("Passowd false"));
-                        }
-                        
+                        }                        
                     });
                 }
             }

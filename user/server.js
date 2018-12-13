@@ -1,36 +1,77 @@
-
 const http = require('http');
-const fs = require('fs');
 const express = require('express');
-const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const config = require('./config.js');
 const methodOverride = require('method-override');
-var helmet = require('helmet');
+const helmet = require('helmet');
+const user = require('./user.js');
 
 const app = express();
 
+
 app.use(logger('dev'));
+app.use(methodOverride());
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
-app.use(methodOverride());
 app.use(express.static(__dirname));
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); //ici être plus restrictif, genre le lien de l'app mobile
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-with, content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-});
-app.use(helmet());
 
-app.get('/', (req, res) => res.sendFile(__dirname+'/app/index.html'));
 
-app.use(function(req, res, next) {
-  res.status(404).sendFile(__dirname+'/app/404/404.html');
+app.use(function onError(err, req, res, next) {
+  res.status(500).send(err);
 });
 
-const server = http.createServer(app)
-.listen(config.port, function(){ 
+app.get('/user/:token', function(req, res){
+  user.getConnectedUser(req.params.token, function(err, user){
+    if(err){
+        res.status(500).send(err);
+    } else {
+        res.status(200).send(JSON.stringify(user));
+    }
+  });
+});
+
+
+  app.get('/users/:id', function(req, res) {
+    user.isAdmin(req.params.id, function(isAdmin){
+      if(isAdmin){
+        user.getAll(function(err, users){
+          if(err) throw new Error("Broke");
+          else res.status(200).send(users);
+        });
+      }
+    });
+  });
+  
+  app.post('/authenticate', function(req, res){
+    if(req.body.mail && req.body.password){
+        user.signin(req.body.mail, req.body.password, function(err, data){
+            if(err) res.status(401).send();
+            else {
+                // log.addLoginLog(data);
+                user.createToken(data, function(response){
+                    res.status(200).send(JSON.stringify(response));
+                });
+            }
+        });
+    }
+  });
+
+  app.post('/register', function(req,res) {
+    if(!user.isExistingUser()){
+        user.subscribe(req.body, function(err){
+            if(err){
+                res.status(500).send({
+                    error: err
+                })
+            }
+            res.status(201).send();
+        });
+    }
+  });
+  
+
+
+const server = http.createServer(app).listen(config.port, function(){ 
   console.log(`Example app listening on port ${config.port}!`)
 });

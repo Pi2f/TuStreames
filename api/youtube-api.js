@@ -1,8 +1,7 @@
 var { google } = require('googleapis');
 const googleAuth = require('./google-authentication.js');
 const fs = require('fs');
-const log = require('../log.js');
-
+const got = require('got');
 /**
  * Remove parameters that do not have values.
  *
@@ -104,7 +103,17 @@ module.exports = {
                         'part': 'snippet',
                         'q': req.body.keyword,
                         'type': 'video'}}, res, searchListByKeyword);
-            log.addSearchLog(req.body);
+                        
+                        got('/log/search', { 
+                            baseUrl: "http://localhost:3006/", 
+                            json: true,
+                            body: req.body })
+                        .then(function(response) { 
+                            res.send(response.body);
+                        })
+                        .catch(function(error){
+                            console.log('error:', error);
+                        });
         });
     },
 

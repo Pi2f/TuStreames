@@ -1,6 +1,5 @@
 var Vimeo = require('vimeo').Vimeo;
 const config = require('../config.js');
-const log = require('../log.js');
 const client = new Vimeo(config.vimeo.clientID, config.vimeo.secret, config.vimeo.unauthenticatedToken);
           
           
@@ -33,7 +32,16 @@ module.exports = {
                 };
                 videoSet.push(video);
             }
-            log.addSearchLog(req.body);
+            got('/log/search', { 
+              baseUrl: "http://localhost:3006/", 
+              json: true,
+              body: req.body })
+            .then(function(response) { 
+                res.send(response.body);
+            })
+            .catch(function(error){
+                console.log('error:', error);
+            });
             res.status(200).send(JSON.stringify(videoSet));
           });
     }  

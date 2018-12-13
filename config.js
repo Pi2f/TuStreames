@@ -1,7 +1,7 @@
 module.exports = {
-    'secret': "278f0c89-1b43-485d-8c3c-411a71b72261",
     'port' : "3000",
-    'urlDB' : 'mongodb://192.168.99.100:32787/TuStreames',
+    'urlDB' : 'mongodb://192.168.99.100:32789/TuStreames',
+    // 'urlDB' : 'mongodb://database/TuStreames',
     vimeo: {
         clientID : "52661bbe93423155c914afc02a3fef458e29975e",
         unauthenticatedToken: "79745e50364d3998b30466e00e7d122e",
