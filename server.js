@@ -55,6 +55,7 @@ app.use(function(req, res, next) {
   res.status(404).sendFile(__dirname+'/app/404/404.html');
 });
 
+
 const server = https.createServer(options,app).listen(config.port, function(){ 
   console.log(`Example app listening on port ${config.port}!`)
 });

@@ -47,6 +47,42 @@ router.post('/authenticate', function(req, res){
     });
 });
 
+router.post('/forgot', function (req, res) {    
+    got('/forgot', {
+        baseUrl: userApiUrl,
+        json: true,
+        body: req.body
+    }).then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
+    });
+});
+/*
+var path = require ('path');
+
+router.get('/reset/:token', function(req, res) {
+    console.log("get reset : "+req.params.token);
+
+   return res.sendFile(path.join(__dirname + '/../app/views/resetPassword.view.html'));
+});
+*/
+
+router.post('/resetpw/:token',function(req, res) {
+    console.log("post reset : "+req.params.token);
+    got('/reset/'+req.params.token, {
+        baseUrl: userApiUrl,
+        json: true,
+        body: req.body
+    }).then(function(response) { 
+        res.send(response.body);
+    })
+    .catch(function(error){
+        console.log('error:', error);
+    });
+});
+
 router.post('/register', function(req,res) {
     got('/register', { 
         baseUrl: userApiUrl, 

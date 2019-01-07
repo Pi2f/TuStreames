@@ -38,6 +38,16 @@
       component: 'authentication',
     },
     {
+      name: 'passwordLost',
+      url: '/passwordLost',
+      component: 'passwordLost',
+    },
+    {
+      name: 'resetPassword',
+      url: '/resetPassword',
+      component: 'resetPassword',
+    },
+    {
       name: 'home',
       url: '/home',
       component: 'home',

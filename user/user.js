@@ -32,7 +32,9 @@ const userSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true,
-    }
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 });
 
 userSchema.pre('save', function (next) {
@@ -66,6 +68,11 @@ function checkForExistingUser(mail, cb){
 const userModel = mongoose.model('Users', userSchema);
 
 module.exports = {
+
+    getUserModel : function() {
+        return userModel;
+    },
+
     isAdmin: function(data, cb){
         return userModel.findOne({
             _userID: data,
@@ -76,8 +83,10 @@ module.exports = {
 
     subscribe: function(data, cb){
         if(isStrongPassword(data.password) && isValidMail(data.mail)){
+            console.log("strong password & valid email");
             checkForExistingUser(data.mail, function(result){
                 if(result == null){
+                    console.log("user don't exist yet")
                     const userData = new userModel({
                         username: data.username,
                         mail: data.mail,
@@ -88,11 +97,13 @@ module.exports = {
                         if(err) cb(err);
                     });
                 } else {
+                    console.log("user already exist");
                     cb(new Error("Mail déjà utilisé par un autre utilisateur"))
                 }
             });
             
         } else {
+            console.log("Invalide password or mail");
             cb(new Error("Invalide password or mail"));
         }
     },
@@ -155,5 +166,11 @@ module.exports = {
             if(err) cb(err);
             else cb(null, users);
         })
+    },
+
+    checkForExistingUser : function (mail, cb){
+        userModel.findOne({mail: mail}, function(err, result){
+            cb(result);
+        });
     }
 }

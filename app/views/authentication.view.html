@@ -21,6 +21,9 @@
               <input type="checkbox" class="custom-control-input" id="customCheck1">
               <label class="custom-control-label" for="customCheck1">Remember password</label>
             </div>
+            <div>
+              <a class="nav-link" ng-if="!vm.currentUser" ui-sref="passwordLost" ui-sref-active="active">mot de passe oublié</a>
+            </div>
             <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
             <hr class="my-4">
           </form>
