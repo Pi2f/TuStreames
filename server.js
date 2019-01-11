@@ -10,9 +10,9 @@ const api = require('./api/api.js');
 const database = require('./database.js');
 const methodOverride = require('method-override');
 const helmet = require('helmet');
-// const user = require('./user/server.js');
-// const log = require('./log/server.js');
-// const playlist = require('./playlist/server.js');
+const user = require('./user/server.js');
+const log = require('./log/server.js');
+const playlist = require('./playlist/server.js');
 // const Sentry = require('@sentry/node');<
 
 // Sentry.init({ 
