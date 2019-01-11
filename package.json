@@ -8,7 +8,7 @@
   "description": "Application de streaming de vidéos youtube ou vimeo",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -48,7 +48,6 @@
     "vimeo": "^2.1.1"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.4.1",
-    "nodemon": "^1.18.4"
+    "@fortawesome/fontawesome-free": "^5.4.1"
   }
 }
