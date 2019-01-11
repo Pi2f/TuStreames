@@ -1,4 +1,5 @@
-const https = require('https');
+// const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const express = require('express');
 const path = require('path');
@@ -12,7 +13,7 @@ const helmet = require('helmet');
 // const user = require('./user/server.js');
 // const log = require('./log/server.js');
 // const playlist = require('./playlist/server.js');
-// const Sentry = require('@sentry/node');
+// const Sentry = require('@sentry/node');<
 
 // Sentry.init({ 
 //     dsn: 'https://1f623e025fe041aaa5a504dcaf2eba8b@sentry.io/1340719',
@@ -55,7 +56,8 @@ app.use(function(req, res, next) {
   res.status(404).sendFile(__dirname+'/app/errors/404/404.html');
 });
 
-const server = https.createServer(options,app).listen(process.env.PORT || config.port, function(){ 
+// const server = https.createServer(options,app).listen(process.env.PORT || config.port, function(){ 
+const server = http.createServer(app).listen(process.env.PORT || config.port, function(){ 
   console.log(`Example app listening on port ${config.port}!`)
 });
 
