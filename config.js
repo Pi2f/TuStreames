@@ -1,7 +1,7 @@
 module.exports = {
     'port' : "3000",
     // 'urlDB' : 'mongodb://192.168.99.100:32777/TuStreames',
-    'urlDB' : 'mongodb://tu-streames1:tu-streames@ds153974.mlab.com:53974/tu-streames',
+    'urlDB' : 'mongodb://tu-streames1:tu-streames1@ds153974.mlab.com:53974/tu-streames',
     // 'urlDB' : 'mongodb://database/TuStreames',
     vimeo: {
         clientID : "52661bbe93423155c914afc02a3fef458e29975e",
