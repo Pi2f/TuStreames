@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('http-auth-interceptor', ['http-auth-interceptor-buffer'])
+    angular.module('app')
     .config(function($httpProvider){
         $httpProvider.interceptors.push([
             '$injector',
@@ -11,11 +11,12 @@
         ]);
     })
 
-    .factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
+    .factory('AuthInterceptor', function ($rootScope, $q, $location, AUTH_EVENTS) {
         return {
             responseError: function (response) { 
                 $rootScope.$broadcast({
                     401: AUTH_EVENTS.notAuthenticated,
+                    403: AUTH_EVENTS.forbidden
                 }[response.status], response);
                 
                 return $q.reject(response);

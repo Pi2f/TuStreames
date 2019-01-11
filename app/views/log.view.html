@@ -4,7 +4,7 @@
             Historique de recherche
         </div>
         <div class="border-left border-secondary pl-3" ng-if="!vm.isPageAdmin()">
-            <a href="" class="text-secondary" ng-click="vm.deleteLogs()">
+            <a href="" class="text-secondary" ng-click="vm.deleteLogs()" ng-disabled="vm.isLoading">
                 <i class="fas fa-trash"></i>
             </a>
         </div>

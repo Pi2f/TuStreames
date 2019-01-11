@@ -21,8 +21,10 @@
     }
 
     function deleteLogs() {
+      vm.isLoading = true;
       LogService.DeleteLogs(isPageAdmin()).then(function(){
         vm.logs = [];
+        vm.isLoading = false;
       })
     }
 

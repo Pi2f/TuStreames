@@ -84,7 +84,12 @@ function searchListByKeyword(auth, requestData, res) {
             }
             videoSet.push(video);
         }
-        res.send(JSON.stringify(videoSet));
+        
+        res.send(JSON.stringify({
+            videoSet: videoSet,
+            nextPageToken: response.data.nextPageToken,
+            prevPageToken: response.data.prevPageToken,
+        }));
     });
 }  
           
@@ -99,10 +104,12 @@ module.exports = {
             }
             // Authorize a client with the loaded credentials, then call the YouTube API.
             //See full code sample for authorize() function code.
-            googleAuth.authorize(JSON.parse(content), {'params': {'maxResults': '20',
+            googleAuth.authorize(JSON.parse(content), {'params': {
+                        'maxResults': '20',
                         'part': 'snippet',
                         'q': req.body.keyword,
-                        'type': 'video'}}, res, searchListByKeyword);
+                        'type': 'video'}
+                    }, res, searchListByKeyword);
                         
                         got('/log/search', { 
                             baseUrl: "http://localhost:3006/", 
@@ -116,5 +123,23 @@ module.exports = {
                         });
         });
     },
+
+    page: function(req, res){
+        // Load client secrets from a local file.
+        return fs.readFile('./api/client_secret.json', function processClientSecrets(err, content) {
+           if (err) {
+               console.log('Error loading client secret file: ' + err);
+               return;
+           }
+           // Authorize a client with the loaded credentials, then call the YouTube API.
+           //See full code sample for authorize() function code.
+           googleAuth.authorize(JSON.parse(content), {'params': {
+                       'maxResults': '20',
+                       'part': 'snippet',
+                       'pageToken': req.body.pageToken,
+                       'type': 'video'}
+                   }, res, searchListByKeyword);
+       });
+   }, 
 
 }

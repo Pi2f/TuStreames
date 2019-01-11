@@ -31,14 +31,14 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content modal-sm">
       <div class="modal-body">
-        <form class="my-2 my-lg-0" ng-submit="vm.addPlaylist()">
+        <form class="my-2 my-lg-0">
           <div class="row justify-content-around">
             <div class="form-group">
               <label>Nouvelle playlist</label>
               <input class="form-control mr-sm-2" placeholder="Name" type="text" ng-model="vm.name">
             </div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-            <button type="submit" class="btn btn-primary">Créer</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.addPlaylist()" ng-disabled="vm.isLoading">Créer</button>
           </div>
         </form>
       </div>

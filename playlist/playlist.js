@@ -50,7 +50,6 @@ const playlistModel = mongoose.model('Playlists', playlistSchema);
 
 module.exports = {
     add: function(data, cb){
-
         const playlistData = new playlistModel({
             _playlistID: uuidv4(),
             name: data.name,
@@ -85,9 +84,11 @@ module.exports = {
             function(err, playlists){
                 playlists.forEach(function(playlist){
                     playlist.remove(function(err){
-                        console.log(err);
+                        if(err){
+                            console.log(err);
+                        }
                     });
-                })
+                });
                 if(err) cb(err);
                 else cb(null, playlists);
             }

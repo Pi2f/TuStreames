@@ -11,3 +11,6 @@
   background: scroll center url('https://source.unsplash.com/ih5Kq0XowwY/414X512');
   background-size: cover;
 }
+
+$input-focus-border-color: lighten(map_get($theme-colors, "secondary"), 25%);
+

@@ -67,7 +67,9 @@ module.exports = {
             message: data.keyword,
         });
         logData.save(function(err){
-            console.log(err)
+            if(err){
+                console.log(err)
+            }
         });
     },
 
@@ -79,7 +81,9 @@ module.exports = {
             message: "Connexion",
         });
         logData.save(function(err){
-            console.log(err)
+            if(err){
+                console.log(err)
+            }
         });
     },
 
@@ -94,6 +98,7 @@ module.exports = {
             if(err){
                 console.log(err)
             }
+            cb();
         });
     },
 
@@ -104,7 +109,7 @@ module.exports = {
         }, function(err, logs) {
             if(err) cb(err);
             else cb(null, logs);
-        })
+        }).limit(20);
     },
 
     getAllLogs: function(cb){
@@ -112,7 +117,7 @@ module.exports = {
         }, function(err, logs) {
             if(err) cb(err);
             else cb(null, logs);
-        })
+        }).limit(20);
     },
 
     deleteAllAuthLogs: function(cb){

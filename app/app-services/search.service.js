@@ -7,10 +7,19 @@
     function SearchService($http) {
         var service = {};
         service.Search = Search;
+        service.Page = Page;
         return service;
         
         function Search(data) {
             return $http.post('/api/search', data)
+                .then(function(resp) {                
+                    return resp.data;
+                }
+                ,handleError);
+        };
+
+        function Page(data) {
+            return $http.post('/api/page', data)
                 .then(function(resp) {                
                     return resp.data;
                 }

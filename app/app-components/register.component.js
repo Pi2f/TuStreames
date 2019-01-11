@@ -7,21 +7,23 @@
     controllerAs: 'vm'
   });
 
-  RegisterController.$inject = ['$rootScope', 'UserService', '$state']
+  RegisterController.$inject = ['$state', 'UserService']
   
-  function RegisterController($rootScope, UserService){
+  function RegisterController($state, UserService){
     var vm = this;
     vm.register = register;
 
     function register(){
+      vm.isLoading = true;
       const form = {
         username: vm.username,
         mail: vm.mail,
         password: vm.password
       }
-      UserService.CreateUser(form, function(response){
+      UserService.CreateUser(form).then(function(response){
         if(response.data.success){          
-          $state.go('authenticate');
+          vm.isLoading = false
+          $state.go('authentication');
         }
       });
     }

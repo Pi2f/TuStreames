@@ -7,26 +7,31 @@
     controllerAs: 'vm',
   });
 
-  SidebarCtrl.$inject = ['PlaylistService', 'SessionService'];
+  SidebarCtrl.$inject = ['$scope','PlaylistService', 'SessionService', 'PLAYLIST_EVENTS'];
 
-  function SidebarCtrl(PlaylistService, SessionService) {
+  function SidebarCtrl($scope, PlaylistService, SessionService, PLAYLIST_EVENTS) {
     var vm = this;
     vm.toggle = toggle;
     vm.addPlaylist = addPlaylist;
     vm.getPlaylists = getPlaylists;
-    vm.playlists = [];
     vm.currentUser = SessionService.user;
     
+    $scope.$on(PLAYLIST_EVENTS.syncPlaylist, function (event) {
+      getPlaylists();
+    })
+
     function toggle(){
       $('.sidebar').toggleClass('active');
       $(vm).toggleClass('active');
-      getPlaylists();
     };
 
-    function addPlaylist(){  
+    function addPlaylist(){
+      vm.isLoading = true;  
       PlaylistService.CreatePlaylist({name: vm.name, user: vm.currentUser}).then(function(){
         $('#newPlaylist').modal('hide');
-        getPlaylists();
+        toastr["success"]("Playlist added !!");
+        $scope.$emit(PLAYLIST_EVENTS.playlistUpdated,{});
+        vm.isLoading = false;
       });
     }
 

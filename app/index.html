@@ -15,37 +15,51 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" ng-if="!vm.currentUser" ui-sref="register" ui-sref-active="active">Subscribe<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" ng-if="!vm.currentUser" ui-sref="authentication" ui-sref-active="active">Sign in</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <div class="input-group">
-          <div class="input-group-prepend">
-              <button type="button" class="btn btn-primary">{{ vm.selected }}</button>
-              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+    <div class="collapse navbar-collapse justify-content-between">
+      <div>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" ng-if="!vm.currentUser" ui-sref="register" ui-sref-active="active">Subscribe<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" ng-if="!vm.currentUser" ui-sref="authentication" ui-sref-active="active">Sign in</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" ng-if="vm.currentUser.isAdmin" ui-sref="admin" ui-sref-active="active">Admin</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <form ng-if="vm.currentUser" class="form-inline my-2 my-lg-0" ng-submit="vm.search()">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span class="mx-2">{{ vm.selected }}</span>
+              </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item" ng-click="vm.toggle()" href="">{{vm.unselected}}</a>
               </div>
             </div>
-        <input class="form-control mr-sm-2" placeholder="Search" type="text" ng-model="vm.value">
-        <button class="btn btn-primary my-2 my-sm-0" type="button" ui-sref="search({value: vm.value, api: vm.selected})">Search</button>
-        </div>
-      </form>
-      <div class="pull-right">
+            <input class="form-control mr-sm-2" placeholder="Search" type="text" ng-model="vm.value" ng-disabled="vm.isLoading">
+            <button class="btn btn-primary my-2 my-sm-0" type="button" ng-click="vm.search()" ng-disabled="vm.isLoading">Search</button>
+          </div>
+        </form>
+      </div>
+      <div ng-if="!!vm.currentUser">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" ng-if="vm.currentUser.isAdmin" ui-sref="admin" ui-sref-active="active">Admin</a>
-          </li>
-          <li class="nav-item">
-            <a ng-if="!!vm.currentUser" href="" class="nav-link" ng-click="vm.logout()">
-              <i class="fas fa-sign-out-alt"></i>
-            </a>
+            <div class="row px-3 align-content-center">
+              <span class="nav-link">{{ vm.currentUser.mail }}</span>
+              <span class="nav-link">                
+                  <i class="fas fa-user-circle fa-2x"></i>
+              </span>
+              <span>
+                <a href="" class="nav-link" ng-click="vm.logout()">
+                  <i class="fas fa-sign-out-alt"></i>
+                </a>
+              </span>
+            </div>
           </li>
         </ul>
       </div>
@@ -71,6 +85,7 @@
   <script type="text/javascript" src="./bootstrap/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="./angular/angular.min.js"></script>
   <script type="text/javascript" src="./@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+  <script type="text/javascript" src="./toastr/toastr.js"></script>
   <script type="text/javascript" src="app/app.js"></script>
   <script type="text/javascript" src="./register.component.js"></script>
   <script type="text/javascript" src="./authentication.component.js"></script>
@@ -83,13 +98,16 @@
   <script type="text/javascript" src="./playlist.component.js"></script>
   <script type="text/javascript" src="./admin.component.js"></script>
   <script type="text/javascript" src="./users-list.component.js"></script>
-  
+  <script type="text/javascript" src="./password-reset.component.js"></script>
+  <script type="text/javascript" src="./password-forgot.component.js"></script>
+
   <script type="text/javascript" src="app/app-services/authentication.service.js"></script>
   <script type="text/javascript" src="app/app-services/session.service.js"></script>
   <script type="text/javascript" src="app/app-services/user.service.js"></script>
   <script type="text/javascript" src="app/app-services/playlist.service.js"></script>
   <script type="text/javascript" src="app/app-services/search.service.js"></script>
   <script type="text/javascript" src="app/app-services/log.service.js"></script>
+  <script type="text/javascript" src="app/app-services/pagination.service.js"></script>
   <script type="text/javascript" src="app/auth-interceptor.js"></script>
 </body>
 

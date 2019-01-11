@@ -1,6 +1,6 @@
 module.exports = {
     'port' : "3000",
-    'urlDB' : 'mongodb://192.168.99.100:32789/TuStreames',
+    'urlDB' : 'mongodb://192.168.99.100:32777/TuStreames',
     // 'urlDB' : 'mongodb://database/TuStreames',
     vimeo: {
         clientID : "52661bbe93423155c914afc02a3fef458e29975e",

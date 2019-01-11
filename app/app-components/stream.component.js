@@ -8,8 +8,8 @@
         controllerAs: 'vm'
     }).filter('trusted', StreamFilter);
 
-    StreamCtrl.$inject = ['$stateParams','PlaylistService'];
-    function StreamCtrl($stateParams, PlaylistService){
+    StreamCtrl.$inject = ['$stateParams','PlaylistService', 'PLAYLIST_EVENTS'];
+    function StreamCtrl($stateParams, PlaylistService, PLAYLIST_EVENTS){
         var vm = this;
         vm.video = $stateParams.video;
         vm.video.url = vm.video.embedUrl + vm.video.id;
@@ -27,8 +27,12 @@
 
         function addToPlaylist(playlist) {
           playlist.videos.push(vm.video);
+          vm.isLoading = true;
           PlaylistService.UpdatePlaylist(playlist).then(function(){
             $('#addToPlaylist').modal('hide');
+            toastr["success"]("Video added to playlist " + playlist.name);
+            $scope.$emit(PLAYLIST_EVENTS.playlistUpdated,{});
+            vm.isLoading = false;
           });
         }
     }

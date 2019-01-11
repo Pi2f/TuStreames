@@ -52,8 +52,7 @@
           <label>Voulez-vous supprimer la playlist :</label>
         </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary" ng-click="vm.deletePlaylist(playlist)">Yes</button>
-
+        <button type="button" class="btn btn-primary" ng-click="vm.deletePlaylist()" ng-disabled="vm.isLoading">Yes</button>
       </div>
     </div>
   </div>

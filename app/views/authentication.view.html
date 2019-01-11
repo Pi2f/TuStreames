@@ -14,14 +14,14 @@
             <div class="form-label-group">
               <input type="password" id="inputPassword" ng-model="vm.password" class="form-control" placeholder="Password"
                 required>
-              <label for="inputPassword">Password</label>
+              <label for="inputPassword">Password</label>              
             </div>
+            <small>{{vm.info}}</small>
 
-            <div class="custom-control custom-checkbox mb-3">
-              <input type="checkbox" class="custom-control-input" id="customCheck1">
-              <label class="custom-control-label" for="customCheck1">Remember password</label>
-            </div>
-            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+            <div class="text-center">
+                <a ui-sref="passwordForgot" ui-sref-active="active">Mot de passe oublié</a>
+              </div>
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" ng-disabled="vm.isLoading">Sign in</button>
             <hr class="my-4">
           </form>
         </div>

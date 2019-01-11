@@ -2,7 +2,7 @@
     'use strict';
     angular.module('app').factory('AuthenticationService', AuthenticationService);
     
-    AuthenticationService.$inject = ['$http', 'SessionService', 'UserService'];
+    AuthenticationService.$inject = ['$http', 'SessionService'];
     function AuthenticationService($http, SessionService) { 
         
         var service = {};
@@ -15,12 +15,16 @@
         function Login(mail, password) {
             return $http.post('/api/authenticate',{mail: mail, password: password})
             .then(function(response){
-                var session = {
-                    user: response.data.user,
-                    token: response.data.token
+                if(response.data.err){
+                    return response.data;
+                } else {
+                    var session = {
+                        user: response.data.user,
+                        token: response.data.token
+                    }
+                    SessionService.CreateSession(session);
+                    return session;
                 }
-                SessionService.CreateSession(session);
-                return session;
             }); 
         }
 
@@ -32,7 +36,7 @@
             });
         }
 
-        function Logout() {
+        function Logout() {        
             return $http.get('/api/logout/'+SessionService.user.id).then(function(){
                 SessionService.DeleteSession();
             });

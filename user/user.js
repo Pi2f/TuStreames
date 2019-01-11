@@ -32,6 +32,16 @@ const userSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true,
+    },
+    isBlocked: {
+        type: Boolean,
+        default: false,
+    },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpires: {
+        type: Date
     }
 });
 
@@ -70,8 +80,46 @@ module.exports = {
         return userModel.findOne({
             _userID: data,
         }, function (err, user) {
-           cb(user.role.indexOf('admin') !== -1);
-        })
+           cb(err, user.role.indexOf('admin') !== -1);
+        });
+    },
+
+    setAdmin: function(data, cb){
+        if(data.role.indexOf('admin') === -1){
+            data.role.push('admin');
+            return userModel.update({
+                _userID: data._userID,
+            }, { role: data.role },
+            function (err, user) {
+                cb(err, user);
+            });
+        } else {
+            data.role.splice(1,data.role.indexOf('admin'));
+            return userModel.update({
+                _userID: data._userID,
+            }, { role: data.role },
+            function (err, user) {
+                cb(err, user);
+            });
+        }
+
+    },
+
+    isBlocked: function(data, cb){
+        return userModel.findOne({
+            _userID: data._userID,
+        }, function (err, user) {
+           cb(err, user.isBlocked);
+        });
+    },
+
+    toggleBlocked: function(data, cb){
+        return userModel.update({
+            _userID: data._userID,
+        }, { isBlocked: !data.isBlocked },
+        function (err, user) {
+            cb(err, user);
+        });
     },
 
     subscribe: function(data, cb){
@@ -88,13 +136,14 @@ module.exports = {
                         if(err) cb(err);
                     });
                 } else {
-                    cb(new Error("Mail déjà utilisé par un autre utilisateur"))
+                    cb("Mail déjà utilisé par un autre utilisateur");
                 }
             });
             
         } else {
-            cb(new Error("Invalide password or mail"));
+            cb("Invalide password or mail");
         }
+        cb();   
     },
 
     signin: function(mail, password, cb){  
@@ -102,15 +151,14 @@ module.exports = {
             function(err, user){
                 if(err){
                     cb(err);
-                } else if (!user){
-                    const err = new Error("L'utilisateur n'existe pas");
-                    return cb(err);
+                } else if (!user){                    
+                    cb("L'utilisateur n'existe pas");
                 } else {
                     bcrypt.compare(password, user.password, function(err, result) {
                         if(result === true){                            
-                            return cb(null, user);
+                            cb(null, user);
                         } else {                
-                            return cb(new Error("Passowd false"));
+                            cb("Password false");
                         }                        
                     });
                 }
@@ -141,13 +189,13 @@ module.exports = {
     getConnectedUser: function(token, cb){
         if(token){
             jwt.verify(token, config.secret, function(err, out){
-                if(err){
+                if(err){                    
                     cb(err);
                 } else {                    
-                    cb(null,out);
+                    cb(out);
                 }
             });
-        } else cb(new Error("Invalid Token"));
+        } else cb("Invalid Token");
     },
 
     getAll: function(cb){
@@ -155,5 +203,47 @@ module.exports = {
             if(err) cb(err);
             else cb(null, users);
         })
+    },
+
+
+    changePassword: function(body, token, done){
+        return userModel.findOne({
+            mail: body.mail
+          }, function (err, user) {
+    
+            if (!user) {
+              done('No account with that email address exists.', null, null);
+            }
+    
+            user.resetPasswordToken = token;
+            user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    
+            user.save(function (err) {
+              if (err) cb(err);
+              done(err, token, user);
+            });
+          });
+    },
+
+    resetPassword: function(token, password, done){
+        userModel.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: {
+              $gt: Date.now()
+            }
+          }, function (err, user) {
+            if (!user) {
+              done('Password reset token is invalid or has expired.',null);
+            } else {
+                user.password = password;
+                user.resetPasswordToken = undefined;
+                user.resetPasswordExpires = undefined;
+        
+                user.save(function (err) {              
+                  done(err, user);
+                });
+            }
+    
+          });
     }
 }

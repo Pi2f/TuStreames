@@ -15,11 +15,17 @@
     return vm;
 
     function login(){  
+      vm.isLoading = true;
       AuthenticationService.Login(vm.mail, vm.password).then(function(data){
-        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess, data.user);
-        $state.go('home');        
-      }, function () {
-        $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+        console.log(data);
+        vm.isLoading = false;        
+        if(data.err){
+          $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+          vm.info = data.err;
+        } else {
+          $rootScope.$broadcast(AUTH_EVENTS.loginSuccess, data.user);
+          $state.go('home');
+        }
       });
     }
   }

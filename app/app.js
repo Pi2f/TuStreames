@@ -7,19 +7,44 @@
   .constant('AUTH_EVENTS', {
     loginSuccess: 'auth-login-success',
     loginFailed: 'auth-login-failed',
-    logoutSuccess: 'auth-logout-success',
-    notAuthenticated: 'auth-not-authenticated',
+    authenticated: 'auth-success',
     notAuthorized: 'auth-not-authorized',
-    authenticated: 'auth-authenticated',
-    authorized: 'authorized'
-  }).constant('USER_ROLES', {
+    forbidden: 'forbidden'
+  })
+  .constant('USER_ROLES', {
     all: '*',
     admin: 'admin',
+  })
+  .constant('PLAYLIST_EVENTS', {
+    playlistUpdated: 'playlist-updated',
+    syncPlaylist: 'playlist-sync',
+  })
+  .constant('SEARCH_EVENTS', {
+    searchSuccess: 'search-success',
   });
 
   config.$inject = ['$stateProvider', 'USER_ROLES'];
   
   function config($stateProvider, USER_ROLES) {
+
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": false,
+      "positionClass": "toast-bottom-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+
     var state = [{
       name: 'default',
       url: '',
@@ -82,6 +107,21 @@
       data: {
         authorizedRoles: USER_ROLES.admin
       }
+    },
+    {
+      name: 'forbidden',
+      url: '/forbidden',
+      templateUrl: 'app/errors/403/403.html'
+    },
+    {
+      name: 'passwordForgot',
+      url: '/passwordForgot',
+      component: 'passwordForgot',
+    },
+    {
+      name: 'passwordReset',
+      url: '/passwordReset',
+      component: 'passwordReset',
     }
   ];
   
@@ -100,17 +140,14 @@
         const stateService = transition.router.stateService;
         return AuthenticationService.isAuthenticated().then(function(user){
           if(!user){
-            $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
             return stateService.target("authentication");
           } else {
-            $rootScope.$broadcast(AUTH_EVENTS.authenticated, user);
+            $rootScope.$broadcast(AUTH_EVENTS.authenticated, user);          
             var authorizedRoles = transition.to().data.authorizedRoles;
             if(!isAuthorized(authorizedRoles,user)){
               $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
               return stateService.target('home');
-            } else {
-              $rootScope.$broadcast(AUTH_EVENTS.authorized);
-            } 
+            }
           }
         });
     });
@@ -128,7 +165,7 @@
     };
   }
   
-  function AppController($scope, $state, USER_ROLES, AuthenticationService, AUTH_EVENTS){
+  function AppController($scope, $state, $location, USER_ROLES, AuthenticationService, AUTH_EVENTS, PLAYLIST_EVENTS, SEARCH_EVENTS){
     var vm = this;
     vm.selected = "YouTube";
     vm.unselected = "Vimeo";
@@ -136,37 +173,36 @@
     vm.userRoles = USER_ROLES;
     vm.setCurrentUser = setCurrentUser;
     vm.logout = logout;
-    vm.search = search;
     vm.toggle = toggle;
+    vm.search= search;
     
     $scope.$on(AUTH_EVENTS.loginSuccess, function (event, user) {
-      console.log("LoginSuccess");
+      toastr["success"]("Login success !!");
       setCurrentUser(user);
-    })
-
-    $scope.$on(AUTH_EVENTS.notAuthenticated, function (event) {
-      console.log("NotAuthenticated");
-    })
-
-    $scope.$on(AUTH_EVENTS.notAuthorized, function (event) {
-      console.log("NotAuthorized");
-    })
-
-    $scope.$on(AUTH_EVENTS.authorized, function (event) {
-      console.log("Authorized");
-    })
-
-    $scope.$on(AUTH_EVENTS.authenticated, function (event, user) {
-      console.log("Authenticated");
-      setCurrentUser(user);
-    })
-
-    $scope.$on(AUTH_EVENTS.logoutSuccess, function (event) {
-      console.log("LogoutSuccess");
     })
 
     $scope.$on(AUTH_EVENTS.loginFailed, function (event) {
-      console.log("LoginFailed");
+      toastr["error"]("Login failed !!");
+    })
+
+    $scope.$on(AUTH_EVENTS.notAuthorized, function (event) {
+      toastr["error"]("You're not authorized !!");
+    })
+
+    $scope.$on(AUTH_EVENTS.forbidden, function (event) {
+      $location.path('forbidden');
+    })
+
+    $scope.$on(AUTH_EVENTS.authenticated, function (event, user) {
+      setCurrentUser(user);
+    });
+
+    $scope.$on(PLAYLIST_EVENTS.playlistUpdated, function (event) {
+      $scope.$broadcast(PLAYLIST_EVENTS.syncPlaylist,{});
+    })
+
+    $scope.$on(SEARCH_EVENTS.searchSuccess, function (event) {
+      vm.isLoading = false;
     })
   
     function setCurrentUser (user) {
@@ -175,14 +211,10 @@
         vm.currentUser.isAdmin = true;
       }
     };
-    
-    function search() {
-      $state.go(search);
-      vm.value = "";
-    }
 
     function logout() {
       vm.currentUser = null;
+      toastr["success"]("Logout success !!");
       $state.go('authentication');
       AuthenticationService.Logout();
     }
@@ -191,7 +223,11 @@
       const aux = vm.selected;
       vm.selected = vm.unselected;
       vm.unselected = aux;
-      console.log(vm.selected);
+    }
+
+    function search(){
+      vm.isLoading = true;
+      $state.go('search',{value: vm.value, api: vm.selected});
     }
   }
 

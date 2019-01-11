@@ -31,9 +31,16 @@ app.get("/log/search/:id", function(req, res) {
 app.post("/log/search", function(req, res) {
     log.addSearchLog(req.body, function(err, logs){
         if(err) res.status(500).send(err);
-        else res.status(200).send();
+        else res.status(200).end();
     });
-  });
+});
+
+app.post("/log/login", function(req, res) {
+    log.addLoginLog(req.body, function(err, logs){
+        if(err) res.status(500).send(err);
+        else res.status(200).end();
+    });
+});
 
 app.get("/log/:id", function(req, res) {
     log.getAllLogs(function(err, logs){
@@ -45,7 +52,7 @@ app.get("/log/:id", function(req, res) {
 app.delete('/log/search/:id', function(req, res) {
   log.deleteAllSearchLogs(req.params.id, function(err){
       if(err) res.status(500).send(err);
-      else res.status(200).send();
+      else res.status(200).end();
   });
 });
 
@@ -59,7 +66,7 @@ app.delete('/log/:id', function(req, res) {
 app.get('/logout/:id', function(req, res){
   log.addLogoutLog(req.params.id, function(err){
       if(err) res.status(500).send(err);
-      else res.status(200).send();
+      else res.status(200).end();
   });
 });
 
