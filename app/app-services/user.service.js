@@ -12,11 +12,16 @@
         service.ToggleBlocked = ToggleBlocked;
         service.Forgot = Forgot;
         service.Reset = Reset;
+        service.GetUser = GetUser;
 
         return service;
 
         function GetUsers(){
             return $http.get('/api/users/'+SessionService.user.id).then(handleSuccess, handleError);
+        }
+
+        function GetUser(id){
+            return $http.get('/api/user/'+id).then(handleSuccess, handleError);
         }
 
         function CreateUser(form){

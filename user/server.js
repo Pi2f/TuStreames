@@ -6,13 +6,11 @@ const config = require('./config.js');
 const methodOverride = require('method-override');
 const helmet = require('helmet');
 const user = require('./user.js');
-const got = require('got');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 var waterfall = require('async-waterfall');
 
 const app = express();
-
 
 app.use(logger('dev'));
 app.use(methodOverride());
@@ -27,14 +25,12 @@ app.use(function onError(err, req, res, next) {
   res.status(500).send(err);
 });
 
-const logApiUrl = "http://localhost:3006/"
-
-app.get('/user/:token', function (req, res) {
-  user.getConnectedUser(req.params.token, function (resp) {
-    res.status(200).send(JSON.stringify(resp));
-  });
+app.get('/user/:id', function (req, res) {
+    user.get(req.params.id, function (err, user) {
+      if (err) throw new Error("Broke");
+      else res.status(200).send(user);
+    });
 });
-
 
 app.get('/user/all/:id', function (req, res) {
   user.isAdmin(req.params.id, function (err, isAdmin) {
@@ -56,28 +52,15 @@ app.post('/user/authenticate', function (req, res) {
       else {
         user.isBlocked(data, function (err, isBlocked) {
           if (!isBlocked) {
-            addLoginLog(data, res);
-            user.createToken(data, function (response) {
-              res.status(200).send(JSON.stringify(response));
-            });
+            res.status(200).send(JSON.stringify({user: data}));            
           } else {
-            res.status(403).send();
+            res.status(403).end();
           }
         });
       }
     });
   }
 });
-
-function addLoginLog(data, res) {
-  got('/log/login', {
-      baseUrl: logApiUrl,
-      json: true,
-      body: data
-    })
-    .then(response => res.send(response.body))
-    .catch(error => console.log(error));
-}
 
 app.post('/user/register', function (req, res) {
   user.subscribe(req.body, function (err) {

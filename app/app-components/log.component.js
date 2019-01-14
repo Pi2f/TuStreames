@@ -6,8 +6,8 @@
     controllerAs: 'vm',
   });
   
-  LogCtrl.$inject = ['LogService', 'USER_ROLES', '$state'];
-  function LogCtrl(LogService, USER_ROLES, $state) {
+  LogCtrl.$inject = ['LogService', 'USER_ROLES', '$state', 'UserService'];
+  function LogCtrl(LogService, USER_ROLES, $state, UserService) {
     var vm = this;
     vm.getLogs = getLogs;
     vm.deleteLogs = deleteLogs;
@@ -17,6 +17,11 @@
     function getLogs() {
       LogService.GetLogs(isPageAdmin()).then(function(resp){
         vm.logs = resp.data;
+        vm.logs.forEach(log => 
+          UserService.GetUser(log.userID).then(function(resp){
+            log.username = resp.data.username;
+          })
+        );
       })
     }
 

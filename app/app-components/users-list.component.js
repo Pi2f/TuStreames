@@ -6,14 +6,15 @@
     controllerAs: 'vm',
   });
   
-  UsersListCtrl.$inject = ['UserService', 'USER_ROLES'];
-  function UsersListCtrl(UserService, USER_ROLES) {
+  UsersListCtrl.$inject = ['SessionService','UserService', 'USER_ROLES'];
+  function UsersListCtrl(SessionService, UserService, USER_ROLES) {
     var vm = this;
     vm.getUsers = getUsers;
     vm.isAdmin = isAdmin;
     vm.setAdmin = setAdmin;
     vm.toggleBlocked = toggleBlocked;
     vm.users = [];
+    vm.currentUser = SessionService.user;
 
     $('#setAdmin').on('show.bs.modal', function(e) {
       vm.user = $(e.relatedTarget).data('user');
@@ -24,7 +25,7 @@
     });
 
     function isAdmin(user){
-      return user.role.indexOf(USER_ROLES.admin) !== -1;
+      return vm.isLoading ? user.role.indexOf(USER_ROLES.admin) !== -1 : false;
     }
 
     function setAdmin() {
@@ -46,8 +47,11 @@
     }
 
     function getUsers() {
+      vm.isLoading = true;
       UserService.GetUsers().then(function(resp){
         vm.users = resp.data;
+        console.log(resp.data);
+        vm.isLoading = false;
       })
     }
   }

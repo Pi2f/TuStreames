@@ -9,7 +9,6 @@ const log = require('./log.js');
 
 const app = express();
 
-
 app.use(logger('dev'));
 app.use(methodOverride());
 app.use(bodyParser.urlencoded({'extended':'true'}));

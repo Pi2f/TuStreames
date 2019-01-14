@@ -13,12 +13,15 @@
     var vm = this;
     vm.getPlaylists = getPlaylists;
     vm.deletePlaylist = deletePlaylist;
+    vm.addPlaylist = addPlaylist;
     vm.playlists = [];
     vm.thumbnailDefault = 'http://placehold.it/120x90';
 
     function getPlaylists(){
+      vm.isLoading = true;
       PlaylistService.GetPlaylistsByUserId().then(function(resp){
         vm.playlists = resp.data;
+        vm.isLoading = false;
       });
     }
 
@@ -30,13 +33,25 @@
       vm.playlist = $(e.relatedTarget).data('playlist');
     });
 
+    function addPlaylist(){
+      vm.isLoading = true;  
+      PlaylistService.CreatePlaylist({name: vm.name, user: vm.currentUser}).then(function(){
+        vm.name = "";
+        $('#newPlaylist').modal('hide');
+        toastr["success"]("Playlist added !!");
+        $scope.$emit(PLAYLIST_EVENTS.playlistUpdated,{});
+        vm.isLoading = false;
+      });
+    }
+
     function deletePlaylist() {
       vm.isLoading = true;
-      PlaylistService.DeletePlaylist(vm.playlist).then(getPlaylists);
-      $('#removePlaylist').modal('hide');
-      toastr["success"]("Playlist removed !!");
-      $scope.$emit(PLAYLIST_EVENTS.playlistUpdated,{});
-      vm.isLoading = false;
+      PlaylistService.DeletePlaylist(vm.playlist).then(function () {
+        $('#removePlaylist').modal('hide');
+        toastr["success"]("Playlist removed !!");
+        $scope.$emit(PLAYLIST_EVENTS.playlistUpdated,{});
+        vm.isLoading = false;
+      });
     }
   }
 

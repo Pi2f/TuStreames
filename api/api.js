@@ -3,24 +3,26 @@ const router = express.Router();
 const youtubeAPI = require('./youtube-api.js');
 const vimeoAPI = require('./vimeo-api.js');
 const got = require('got');
-const path = require('path');
+const jwt = require('jsonwebtoken');
+const config = require('./../config.js');
 
-const userApiUrl = "http://localhost:3001/";
-const playlistApiUrl ="http://localhost:3003/";
-const logApiUrl = "http://localhost:3006/"
+router.get('/:token', function(req, res) {
+    verifyToken(req.params.token, function (resp) {
+        res.status(200).send(JSON.stringify(resp));
+    });
+});
 
-router.get('/user/:token', function(req, res) {
-    got('/user/'+req.params.token, { 
-        baseUrl: userApiUrl, 
+router.get('/user/:id', function(req, res) {
+    got('user/'+req.params.id, { 
+        baseUrl: config.userApiUrl, 
         json: true })
     .then(response => res.send(response.body))
     .catch(handleError);
-    
 });
 
 router.get('/users/:id', function(req, res) {
     got('user/all/'+req.params.id, { 
-        baseUrl: userApiUrl, 
+        baseUrl: config.userApiUrl, 
         json: true })
     .then(response => res.send(response.body))
     .catch(handleError);
@@ -28,21 +30,53 @@ router.get('/users/:id', function(req, res) {
 
 router.post('/authenticate', function(req, res){
     got('/user/authenticate', { 
-        baseUrl: userApiUrl, 
+        baseUrl: config.userApiUrl, 
         json: true,
         body: req.body })
     .then(response => {
-        res.send(response.body)}
-        )
-    .catch((error) => {
-        console.log(error);
-        res.status(error.statusCode).send(error)
+        addLoginLog(response.body.user);
+        createToken(response.body.user, function (response) {
+            res.send(response);
+        });
+    })
+    .catch((error) => {        
+        res.status(error.statusCode).end();
     });
 });
 
+function createToken(user,cb) {
+    const payload = {
+        user: {
+            id: user._userID,
+            mail: user.mail,
+            role: user.role,
+        }
+    };
+
+    const token = jwt.sign(payload, config.secret, {
+        expiresIn: "1 days"
+    });
+
+    const response = {           
+        token: token,
+        user: payload.user
+    }
+    return cb(response);
+}
+
+function addLoginLog(data, res) {
+    got('/log/login', {
+        baseUrl: config.logApiUrl,
+        json: true,
+        body: data
+    })
+    .then(response => res.send(response.body))
+    .catch(handleError);
+}
+
 router.post('/register', function(req,res) {
     got('/user/register', { 
-        baseUrl: userApiUrl, 
+        baseUrl: config.userApiUrl, 
         json: true,
         body: req.body })
     .then(response => res.send(response.body))
@@ -51,7 +85,7 @@ router.post('/register', function(req,res) {
 
 router.post('/user/admin', function(req,res) {
     got('/user/admin', { 
-        baseUrl: userApiUrl, 
+        baseUrl: config.userApiUrl, 
         json: true,
         body: req.body })
     .then(response => res.send(response.body))
@@ -60,7 +94,7 @@ router.post('/user/admin', function(req,res) {
 
 router.get('/user/blocked/:id', function(req,res) {
     got('/user/blocked/'+req.params.id, { 
-        baseUrl: userApiUrl, 
+        baseUrl: config.userApiUrl, 
         json: true })
     .then(response => res.send(response.body))
     .catch(handleError);
@@ -68,7 +102,7 @@ router.get('/user/blocked/:id', function(req,res) {
 
 router.post('/user/blocked', function(req,res) {
     got('/user/blocked', { 
-        baseUrl: userApiUrl, 
+        baseUrl: config.userApiUrl, 
         json: true,
         body: req.body })
     .then(response => res.send(response.body))
@@ -79,7 +113,7 @@ router.post('/user/blocked', function(req,res) {
 
 router.post('/playlist', function(req,res) {
     got('/playlist', { 
-        baseUrl: playlistApiUrl, 
+        baseUrl: config.playlistApiUrl, 
         json: true,
         body: req.body })
     .then(response => res.send(response.body))
@@ -88,7 +122,7 @@ router.post('/playlist', function(req,res) {
 
 router.get('/playlist/:id', function(req, res) {  
     got('/playlist/'+req.params.id, { 
-        baseUrl: playlistApiUrl, 
+        baseUrl: config.playlistApiUrl, 
         json: true })
     .then(response => res.send(response.body))
     .catch(handleError);
@@ -96,7 +130,7 @@ router.get('/playlist/:id', function(req, res) {
 
 router.post('/playlist/video', function(req, res) {
     got('/playlist/video', { 
-        baseUrl: playlistApiUrl, 
+        baseUrl: config.playlistApiUrl, 
         json: true,
         body: req.body })
     .then(response => res.send(response.body))
@@ -105,7 +139,7 @@ router.post('/playlist/video', function(req, res) {
 
 router.delete('/playlist/:id', function(req, res) {
     got('/playlist/'+req.params.id, { 
-        baseUrl: playlistApiUrl, 
+        baseUrl: config.playlistApiUrl, 
         json: true,
         method: 'DELETE' })
     .then(response => res.send(response.body))
@@ -114,45 +148,63 @@ router.delete('/playlist/:id', function(req, res) {
 
 router.post("/search", function(req, res) {
     if(req.body.api == "YouTube"){
-        youtubeAPI.search(req,res);
+        youtubeAPI.search(req,function (response) {
+            res.status(200).send(JSON.stringify(response));
+        });
     }
     if(req.body.api == "Vimeo"){
-        vimeoAPI.searchListByKeyword(req, res);
+        vimeoAPI.searchListByKeyword(req, function (response) {
+            res.status(200).send(JSON.stringify(response));
+        });
     }
 });
 
 router.post("/page", function(req, res) {
     if(req.body.api == "YouTube"){
-        youtubeAPI.page(req,res);
+        youtubeAPI.page(req,function (response) {
+            res.status(200).send(JSON.stringify(response));
+        });
     }
     if(req.body.api == "Vimeo"){
-        vimeoAPI.page(req, res);
+        vimeoAPI.page(req, function(response){
+            res.status(200).send(JSON.stringify(response));
+        });
     }
 });
 
 router.get("/log/search/:id", function(req, res) {
     got('/log/search/'+req.params.id, { 
-        baseUrl: logApiUrl, 
+        baseUrl: config.logApiUrl, 
         json: true })
     .then(response => res.send(response.body))
     .catch(handleError);
-    
+});
+
+router.post("/log/search", function(req, res) {
+    got('/log/search', { 
+        baseUrl: config.logApiUrl, 
+        json: true,
+        body: req.body })
+      .then(function(response) { 
+          res.send(response.body);
+      })
+      .catch(handleError); 
 });
 
 router.get("/log/:id", function(req, res) {
     got('/user/admin/'+req.params.id, {
-        baseUrl: userApiUrl,
+        baseUrl: config.userApiUrl,
         json: true })
     .then(function(response) {
         if(response.body.isAdmin){
             got('/log/'+req.params.id, { 
-                baseUrl: logApiUrl, 
+                baseUrl: config.logApiUrl, 
                 json: true })
             .then(response => res.send(response.body))
             .catch(handleError);
         }
         else {
-            res.send();
+            res.end();
         }
     })
     .catch(handleError);
@@ -160,12 +212,12 @@ router.get("/log/:id", function(req, res) {
 
 router.delete('/log/search/:id', function(req, res) {
     got('/user/admin/'+req.params.id, {
-        baseUrl: userApiUrl,
+        baseUrl: config.userApiUrl,
         json: true })
     .then(function(response) {
         if(response.body.isAdmin){
             got('/log/search/'+req.params.id, { 
-                baseUrl: logApiUrl, 
+                baseUrl: config.logApiUrl, 
                 json: true,
                 method: 'DELETE' })
             .then(response => res.send(response.body))
@@ -180,7 +232,7 @@ router.delete('/log/search/:id', function(req, res) {
 
 router.delete('/log/:id', function(req, res) {
     got('/log/'+req.params.id, { 
-        baseUrl: logApiUrl, 
+        baseUrl: config.logApiUrl, 
         json: true,
         method: 'DELETE' })
     .then(response => res.send(response.body))
@@ -189,7 +241,7 @@ router.delete('/log/:id', function(req, res) {
 
 router.get('/logout/:id', function(req, res){
     got('/logout/'+req.params.id, { 
-        baseUrl: logApiUrl, 
+        baseUrl: config.logApiUrl, 
         json: true })
     .then(response => res.send(response.body))
     .catch(handleError);
@@ -197,7 +249,7 @@ router.get('/logout/:id', function(req, res){
 
 router.post('/forgot', function (req, res) {    
     got('/forgot', {
-        baseUrl: userApiUrl,
+        baseUrl: config.userApiUrl,
         json: true,
         body: req.body
     }).then(function(response) { 
@@ -209,7 +261,7 @@ router.post('/forgot', function (req, res) {
 router.post('/resetpw/:token',function(req, res) {
     console.log("post reset : "+req.params.token);
     got('/reset/'+req.params.token, {
-        baseUrl: userApiUrl,
+        baseUrl: config.userApiUrl,
         json: true,
         body: req.body
     }).then(function(response) { 
@@ -217,6 +269,18 @@ router.post('/resetpw/:token',function(req, res) {
     })
     .catch(handleError);
 });
+
+function verifyToken(token, cb){
+    if(token){
+        jwt.verify(token, config.secret, function(err, out){
+            if(err){                    
+                cb(err);
+            } else {                    
+                cb(out);
+            }
+        });
+    } else cb("Invalid Token");
+}
 
 function handleError(error){
     console.log('error:', error);

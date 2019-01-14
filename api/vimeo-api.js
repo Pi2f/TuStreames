@@ -5,7 +5,7 @@ const client = new Vimeo(config.vimeo.clientID, config.vimeo.secret, config.vime
           
           
 module.exports = {
-    searchListByKeyword: function (req,res) {
+    searchListByKeyword: function (req, cb) {
         client.request({
             method: 'GET',
             path: '/videos',
@@ -33,25 +33,16 @@ module.exports = {
                 };
                 videoSet.push(video);
             }
-            got('/log/search', { 
-              baseUrl: "http://localhost:3006/", 
-              json: true,
-              body: req.body })
-            .then(function(response) { 
-                res.send(response.body);
-            })
-            .catch(function(error){
-                console.log('error:', error);
-            });
-            console.log(response);
-            res.status(200).send(JSON.stringify({
-                videoSet: videoSet, 
-                nextPageToken: response.paging.next,
+            const res = {
+                videoSet: videoSet,
+                nextPageToken: response.paging.next,  
                 prevPageToken: response.paging.previous
-            }));
+            }
+            cb(res);
           });
     },
-    page: function (req,res) {
+
+    page: function (req, cb) {
         client.request({
             method: 'GET',
             path: req.body.pageToken,
@@ -75,11 +66,13 @@ module.exports = {
                 };
                 videoSet.push(video);
             }
-            res.status(200).send(JSON.stringify({
-                videoSet: videoSet, 
-                nextPageToken: response.paging.next,
+
+            const res = {
+                videoSet: videoSet,
+                nextPageToken: response.paging.next,  
                 prevPageToken: response.paging.previous
-            }));
+            }
+            cb(res);
           });
     }   
 }

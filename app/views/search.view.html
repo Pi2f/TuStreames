@@ -10,26 +10,26 @@
         </div>
     </div>
 
-    <div ng-if="!vm.isLoading" ng-repeat="video in vm.videoSet" class="col-3 mb-4">
-        <div class="card stream-link h-100" ui-sref="stream({video: video})">
-            <div class="card-body p-0">
-                <img class="card-img-top stream-link" src="{{video.thumbnails.medium}}" alt="Card image cap">
-                <div class="card-title">{{video.title}}"</div>
-                <div class="card-text p-3">
-                    <p>{{video.description}}</p>
+    <div ng-if="!vm.isLoading" class="row m-0">
+        <div class="col-3 stream-link p-2" ng-repeat="video in vm.videoSet" ui-sref="stream({video: video})">
+            <div class="card h-100">
+                <div class="card-body p-0">
+                    <img class="card-img-top stream-link" src="{{video.thumbnails.medium}}" alt="Card image cap">
+                    <h5 class="card-title">{{video.title}}"</h5>
+                    <p class="card-text m-3">
+                        {{video.description}}
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <nav aria-label="Page navigation example"> -->
-        <ul class="pagination">
-            
-            <li class="page-item" ng-class="{disabled:!vm.prevPage}" >
-                <a ng-click="vm.page(vm.prevPage)" class="page-link">Previous</a>
-            </li>
-            <li class="page-item" ng-class="{disabled:!vm.nextPage}">
-                <a ng-click="vm.page(vm.nextPage)" class="page-link">Next</a>
-            </li>
-        </ul>
-    <!-- </nav> -->
+    <ul class="pagination">
+
+        <li class="page-item" ng-class="{disabled:!vm.prevPage}">
+            <a ng-click="vm.page(vm.prevPage)" class="page-link">Previous</a>
+        </li>
+        <li class="page-item" ng-class="{disabled:!vm.nextPage}">
+            <a ng-click="vm.page(vm.nextPage)" class="page-link">Next</a>
+        </li>
+    </ul>
 </div>

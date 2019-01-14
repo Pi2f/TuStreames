@@ -12,25 +12,18 @@
         
         function Search(data) {
             return $http.post('/api/search', data)
-                .then(function(resp) {                
-                    return resp.data;
-                }
-                ,handleError);
+                .then(handleSuccess, handleError);
         };
 
         function Page(data) {
             return $http.post('/api/page', data)
-                .then(function(resp) {                
-                    return resp.data;
-                }
-                ,handleError);
+                .then(handleSuccess, handleError);
         };
-    
     }
 
-    // function handleSuccess(res){
-    //     return res;
-    // }
+    function handleSuccess(res){
+        return res.data;
+    }
 
     function handleError(error){
         return { success: false, message: error };

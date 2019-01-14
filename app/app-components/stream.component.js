@@ -8,10 +8,15 @@
         controllerAs: 'vm'
     }).filter('trusted', StreamFilter);
 
-    StreamCtrl.$inject = ['$stateParams','PlaylistService', 'PLAYLIST_EVENTS'];
-    function StreamCtrl($stateParams, PlaylistService, PLAYLIST_EVENTS){
+    StreamCtrl.$inject = ['$scope','$stateParams','PlaylistService', 'PLAYLIST_EVENTS'];
+    function StreamCtrl($scope, $stateParams, PlaylistService, PLAYLIST_EVENTS){
         var vm = this;
-        vm.video = $stateParams.video;
+
+        if($stateParams.video){
+          PlaylistService.StoreVideo($stateParams.video);
+        }
+        vm.video = {};
+        PlaylistService.GetVideo(vm.video);
         vm.video.url = vm.video.embedUrl + vm.video.id;
         vm.addToPlaylist = addToPlaylist;
 

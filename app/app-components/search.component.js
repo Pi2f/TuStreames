@@ -7,12 +7,11 @@
     controllerAs: 'vm'
   });
 
-  SearchCtrl.$inject = ['$scope', '$stateParams', 'SearchService', 'SessionService', 'SEARCH_EVENTS', 'PagerService'];
+  SearchCtrl.$inject = ['$scope', '$stateParams', 'SearchService', 'SessionService', 'SEARCH_EVENTS', 'LogService'];
 
-  function SearchCtrl($scope, $stateParams, SearchService, SessionService, SEARCH_EVENTS, PagerService) {
+  function SearchCtrl($scope, $stateParams, SearchService, SessionService, SEARCH_EVENTS, LogService) {
     var vm = this;
     vm.videoSet = [];
-    vm.pager = {};
     vm.search = search;
     vm.page = page;
 
@@ -30,6 +29,7 @@
           vm.isLoading = false;
           vm.nextPage = response.nextPageToken;
           vm.prevPage = response.prevPageToken;
+          LogService.AddSearchLog($stateParams.value,  $stateParams.api);
           $scope.$emit(SEARCH_EVENTS.searchSuccess, {})
         });
       } else {

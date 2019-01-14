@@ -14147,6 +14147,13 @@ button.toast-close-button {
   background-size: cover;
 }
 
+.card-forgot .card-img-left {
+  width: 45%;
+  /* Link to your background image using in the property below! */
+  background: scroll center url("https://source.unsplash.com/Vkau25v1L5Q/414X512");
+  background-size: cover;
+}
+
 .sidebar {
   direction: rtl;
   transform-origin: center left;
@@ -14194,6 +14201,10 @@ button.toast-close-button {
 .btn-add-playlist:hover {
   background-color: #28a745;
   border: 0.25rem solid #28a745;
+}
+
+.modal-dialog {
+  direction: initial;
 }
 
 .stream-link .card-body:hover .card-img-top {

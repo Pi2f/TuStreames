@@ -17,7 +17,6 @@
     function login(){  
       vm.isLoading = true;
       AuthenticationService.Login(vm.mail, vm.password).then(function(data){
-        console.log(data);
         vm.isLoading = false;        
         if(data.err){
           $rootScope.$broadcast(AUTH_EVENTS.loginFailed);

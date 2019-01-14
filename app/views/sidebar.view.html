@@ -8,7 +8,7 @@
   </div>
   <div id="sidebar" class="align-self-center px-2 h-100">
     <ul class="list-unstyled text-center h-100 mb-0 p-3 d-flex flex-column" ng-init="vm.getPlaylists()">
-      <li ng-repeat="playlist in vm.playlists" ui-sref="playlist({playlist: playlist})">
+      <li ng-if="!vm.isLoading" ng-repeat="playlist in vm.playlists" ui-sref="playlist({playlist: playlist})">
         {{ playlist.name }}
         <a href="" class="d-block mb-4 h-100">
           <img class="img-fluid img-thumbnail" src="{{ playlist.videos[0] ? playlist.videos[0].thumbnails.small : 'http://placehold.it/120x90'}}"

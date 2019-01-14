@@ -1,5 +1,17 @@
 const uuidv4 = require('uuid/v4');
 const mongoose = require('mongoose');
+const config = require('./config.js');
+
+
+mongoose.connect(config.urlDB,{
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+}, function(err) {
+    if (err) { throw err; } else {
+        console.log('Mongo: Database connected');
+    }
+});
 
 const playlistSchema = new mongoose.Schema({
     _playlistID: {
@@ -29,7 +41,7 @@ const playlistSchema = new mongoose.Schema({
 
 playlistSchema.pre('remove', function () {
     var playlist = this;
-    playlistModel.update(playlist,
+    playlistModel.updateOne(playlist,
         {
             isActive: false 
         }, function(err){
@@ -85,7 +97,7 @@ module.exports = {
                 playlists.forEach(function(playlist){
                     playlist.remove(function(err){
                         if(err){
-                            console.log(err);
+                            cb(err);
                         }
                     });
                 });

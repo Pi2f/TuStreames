@@ -7,20 +7,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const config = require('./config.js');
 const api = require('./api/api.js');
-const database = require('./database.js');
 const methodOverride = require('method-override');
 const helmet = require('helmet');
-const user = require('./user/server.js');
-const log = require('./log/server.js');
-const playlist = require('./playlist/server.js');
-// const Sentry = require('@sentry/node');<
-
-// Sentry.init({ 
-//     dsn: 'https://1f623e025fe041aaa5a504dcaf2eba8b@sentry.io/1340719',
-//     maxBreadcrumbs: 50,
-//     debug: true, 
-//   });
-
 
 const options = {
   key: fs.readFileSync(__dirname+'/server.key'),
@@ -29,9 +17,6 @@ const options = {
 
 const app = express();
 
-
-// app.use(Sentry.Handlers.requestHandler());
-// app.use(Sentry.Handlers.errorHandler());
 app.use(logger('dev'));
 app.use(methodOverride());
 app.use(bodyParser.urlencoded({'extended':'true'}));
@@ -40,6 +25,15 @@ app.use(express.static(__dirname));
 app.use(express.static(path.resolve('node_modules')));
 app.use(express.static(__dirname+'/app/app-components'));
 app.use(express.static(__dirname+'/app/app-services'));
+
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); //ici être plus restrictif, genre le lien de l'app mobile
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-with, content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    next();
+});
 
 app.get('/', (req, res) => res.sendFile(__dirname+'/app/index.html'));
 

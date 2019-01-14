@@ -3,7 +3,7 @@
     <div class="card-header bg-primary text-secondary">
       <h5>Playlists</h5>
     </div>
-    <div class="card" ng-repeat="playlist in vm.playlists">
+    <div class="card" ng-if="!vm.isLoading" ng-repeat="playlist in vm.playlists">
       <div class="playlist-link">
         <div class="card-body">
           <a ui-sref="playlist({playlist: playlist})">
@@ -36,11 +36,16 @@
         </div>
         <div class="card-footer">
           <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#removePlaylist"
-            data-playlist="{{playlist}}">Supprimer la playlist</button>
+            data-playlist="{{playlist}}">Remove the playlist</button>
         </div>
       </div>
     </div>
   </div>
+  <a href="" class="d-block mb-4 h-100">
+    <button type="button" class="btn-add-playlist" data-toggle="modal" data-target="#newPlaylist">
+      <i class="fas fa-folder-plus fa-3x"></i>
+    </button>
+  </a>
 </div>
 
 <div class="modal fade" id="removePlaylist" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -49,10 +54,29 @@
     <div class="modal-content modal-sm">
       <div class="modal-body">
         <div class="form-group">
-          <label>Voulez-vous supprimer la playlist :</label>
+          <label>Do you want to remove the playlist :</label>
         </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
         <button type="button" class="btn btn-primary" ng-click="vm.deletePlaylist()" ng-disabled="vm.isLoading">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="newPlaylist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-sm">
+      <div class="modal-body">
+        <form class="my-2 my-lg-0">
+          <div class="row justify-content-around">
+            <div class="form-group">
+              <label>New playlist</label>
+              <input class="form-control mr-sm-2" placeholder="Name" type="text" ng-model="vm.name">
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" ng-click="vm.addPlaylist()" ng-disabled="vm.isLoading">Create</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -58,7 +58,7 @@ function removeEmptyParameters(params) {
 //     return resource;
 // }
 
-function searchListByKeyword(auth, requestData, res) {
+function searchListByKeyword(auth, requestData, cb) {
     var service = google.youtube('v3');
     var parameters = removeEmptyParameters(requestData['params']);
     var videoSet = [];
@@ -84,18 +84,20 @@ function searchListByKeyword(auth, requestData, res) {
             }
             videoSet.push(video);
         }
-        
-        res.send(JSON.stringify({
+
+        const res = {
             videoSet: videoSet,
             nextPageToken: response.data.nextPageToken,
             prevPageToken: response.data.prevPageToken,
-        }));
+        };
+        
+        cb(res);
     });
 }  
           
 module.exports = {
 
-    search: function(req, res){
+    search: function(req, cb){
          // Load client secrets from a local file.
          return fs.readFile('./api/client_secret.json', function processClientSecrets(err, content) {
             if (err) {
@@ -109,22 +111,11 @@ module.exports = {
                         'part': 'snippet',
                         'q': req.body.keyword,
                         'type': 'video'}
-                    }, res, searchListByKeyword);
-                        
-                        got('/log/search', { 
-                            baseUrl: "http://localhost:3006/", 
-                            json: true,
-                            body: req.body })
-                        .then(function(response) { 
-                            res.send(response.body);
-                        })
-                        .catch(function(error){
-                            console.log('error:', error);
-                        });
+                    }, cb, searchListByKeyword);                                            
         });
     },
 
-    page: function(req, res){
+    page: function(req, cb){
         // Load client secrets from a local file.
         return fs.readFile('./api/client_secret.json', function processClientSecrets(err, content) {
            if (err) {
@@ -136,9 +127,10 @@ module.exports = {
            googleAuth.authorize(JSON.parse(content), {'params': {
                        'maxResults': '20',
                        'part': 'snippet',
+                       'q': req.body.keyword,
                        'pageToken': req.body.pageToken,
                        'type': 'video'}
-                   }, res, searchListByKeyword);
+                   }, cb, searchListByKeyword);
        });
    }, 
 

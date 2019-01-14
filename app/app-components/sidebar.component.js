@@ -28,6 +28,7 @@
     function addPlaylist(){
       vm.isLoading = true;  
       PlaylistService.CreatePlaylist({name: vm.name, user: vm.currentUser}).then(function(){
+        vm.name = "";
         $('#newPlaylist').modal('hide');
         toastr["success"]("Playlist added !!");
         $scope.$emit(PLAYLIST_EVENTS.playlistUpdated,{});
@@ -35,9 +36,11 @@
       });
     }
 
-    function getPlaylists(){  
+    function getPlaylists(){
+      vm.isLoading = true;
       PlaylistService.GetPlaylistsByUserId(vm.currentUser.id).then(function(resp){
         vm.playlists = resp.data;
+        vm.isLoading = false;
       });
     }
 

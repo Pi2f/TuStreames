@@ -6,16 +6,16 @@
     </div>
     <div class="card-body">   
         <table class="table">
-            <tbody>
+            <tbody ng-if="!vm.isLoading">
                 <tr ng-repeat="user in vm.users">
-                    <td class="py-1" >
+                    <td class="py-1">
                         <i ng-if="user.isBlocked" class="fas fa-user-alt-slash"></i>
                         <i ng-if="!user.isBlocked && !vm.isAdmin(user)" class="fas fa-user-alt"></i>
                         <i ng-if="!user.isBlocked && vm.isAdmin(user)" class="fas fa-user-cog"></i>
                     </td>
                     <td class="py-1">{{ user.username }}</td>
                     <td class="py-1">{{ user.role }}</td>
-                    <td class="py-1 d-flex justify-content-between">
+                    <td class="py-1 d-flex justify-content-between" ng-if="user.mail != vm.currentUser.mail">
                         <button class="btn btn-outline-success" href="" ng-if="user.isBlocked" data-toggle="modal" data-target="#toggleBlocked"
                         data-user="{{user}}"><i class="fas fa-user-check"></i></button>
                         <button class="btn btn-outline-danger" href="" ng-if="!user.isBlocked" data-toggle="modal" data-target="#toggleBlocked"
@@ -27,7 +27,7 @@
                     </td>
                 </tr>                           
             </tbody>
-        </table>
+        </table>  
     </div>
 </div>
 <div class="modal fade" id="setAdmin" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -36,10 +36,10 @@
     <div class="modal-content modal-sm">
       <div class="modal-body">
         <div class="form-group">
-          <label>Voulez-vous que l'utilisateur {{ user.username }} deviennent un administrateur :</label>
+          <label>Voulez-vous que l'utilisateur {{ vm.user.username }} <span ng-if="vm.isAdmin(vm.user)"> deviennent administrateur </span> <span ng-if="!vm.isAdmin(vm.user)"> n'ait plus les droits administrateur </span> ?</label>
         </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary" ng-click="vm.setAdmin(user)">Yes</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.setAdmin()">Yes</button>
       </div>
     </div>
   </div>
@@ -51,10 +51,10 @@
     <div class="modal-content modal-sm">
       <div class="modal-body">
         <div class="form-group">
-          <label>Voulez-vous que l'utilisateur {{ user.username }} soit bloqué ?</label>
+          <label>Voulez-vous que l'utilisateur {{ vm.user.username }} soit <span ng-if="vm.user.isBlocked"> débloqué </span> <span ng-if="!vm.user.isBlocked"> bloqué </span>?</label>
         </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary" ng-click="vm.toggleBlocked(user)" ng-disabled="vm.isLoading">Yes</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.toggleBlocked()" ng-disabled="vm.isLoading">Yes</button>
       </div>
     </div>
   </div>

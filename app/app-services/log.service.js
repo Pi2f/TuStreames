@@ -8,7 +8,12 @@
         var service = {};
         service.GetLogs = GetLogs;
         service.DeleteLogs = DeleteLogs;
+        service.AddSearchLog = AddSearchLog;
         return service;
+
+        function AddSearchLog(keyword, api) {
+            return $http.post('/api/log/search', { user: SessionService.user, keyword: keyword, api: api }).then(handleSuccess, handleError);
+        }
 
         function GetLogs(isPageAdmin) {
             if(isPageAdmin){

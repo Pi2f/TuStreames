@@ -1,8 +1,18 @@
 const uuidv4 = require('uuid/v4');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const config = require('./config.js');
+
+mongoose.connect(config.urlDB,{
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+}, function(err) {
+    if (err) { throw err; } else {
+        console.log('Mongo: Database connected');
+    }
+});
+
 
 const userSchema = new mongoose.Schema({
     _userID: {
@@ -87,7 +97,7 @@ module.exports = {
     setAdmin: function(data, cb){
         if(data.role.indexOf('admin') === -1){
             data.role.push('admin');
-            return userModel.update({
+            return userModel.findOneAndUpdate({
                 _userID: data._userID,
             }, { role: data.role },
             function (err, user) {
@@ -95,7 +105,7 @@ module.exports = {
             });
         } else {
             data.role.splice(1,data.role.indexOf('admin'));
-            return userModel.update({
+            return userModel.findOneAndUpdate({
                 _userID: data._userID,
             }, { role: data.role },
             function (err, user) {
@@ -114,7 +124,7 @@ module.exports = {
     },
 
     toggleBlocked: function(data, cb){
-        return userModel.update({
+        return userModel.findOneAndUpdate({
             _userID: data._userID,
         }, { isBlocked: !data.isBlocked },
         function (err, user) {
@@ -154,7 +164,7 @@ module.exports = {
                 } else if (!user){                    
                     cb("L'utilisateur n'existe pas");
                 } else {
-                    bcrypt.compare(password, user.password, function(err, result) {
+                    bcrypt.compare(password, user.password, function(err, result) {                        
                         if(result === true){                            
                             cb(null, user);
                         } else {                
@@ -166,42 +176,17 @@ module.exports = {
         )
     },
 
-    createToken: function(user,cb) {
-        const payload = {
-            user: {
-                id: user._userID,
-                mail: user.mail,
-                role: user.role,
-            }
-        };
-  
-        const token = jwt.sign(payload, config.secret, {
-            expiresIn: "1 days"
-        });
-
-        const response = {           
-            token: token,
-            user: payload.user
-        }
-        return cb(response);
-    },
-
-    getConnectedUser: function(token, cb){
-        if(token){
-            jwt.verify(token, config.secret, function(err, out){
-                if(err){                    
-                    cb(err);
-                } else {                    
-                    cb(out);
-                }
-            });
-        } else cb("Invalid Token");
-    },
-
     getAll: function(cb){
         userModel.find({}, function(err, users) {
             if(err) cb(err);
             else cb(null, users);
+        })
+    },
+
+    get: function(id,cb){
+        userModel.findOne({_userID: id}, function(err, user) {
+            if(err) cb(err);
+            else cb(null, user);
         })
     },
 

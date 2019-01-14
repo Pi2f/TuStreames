@@ -7,7 +7,7 @@
         </div>
         <h3>{{vm.video.channel}}</h3>
         <p>{{vm.video.description}}</p>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#addToPlaylist">Ajouter à une playlist</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addToPlaylist">Add to a playlist</button>
     </div>
 </div>
 <div class="modal fade" id="addToPlaylist" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="exampleModalLabel"
@@ -18,18 +18,18 @@
                 <form class="my-2 my-lg-0">
                     <div class="row justify-content-around">
                         <div class="form-group">
-                            <label>Ajouter la vidéo à une playlist :</label>
+                            <label>Add the video to a playlist :</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <label class="input-group-text">Playlist</label>
                                 </div>
                                 <select ng-options="playlist.name for playlist in vm.playlists" ng-model="selected">
-                                    <option value="">Choisir une playlist</option>
+                                    <option value="">Choose a playlist</option>
                                 </select>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        <button type="button" class="btn btn-primary" ng-click="vm.addToPlaylist(selected)" ng-disabled="vm.isLoading">Ajouter</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="vm.addToPlaylist(selected)" ng-disabled="vm.isLoading">Add</button>
                     </div>
                 </form>
             </div>

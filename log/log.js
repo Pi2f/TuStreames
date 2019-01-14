@@ -1,5 +1,17 @@
 const uuidv4 = require('uuid/v4');
 const mongoose = require('mongoose');
+const config = require('./config.js');
+
+
+mongoose.connect(config.urlDB,{
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+}, function(err) {
+    if (err) { throw err; } else {
+        console.log('Mongo: Database connected');
+    }
+});
 
 const type = {
     SEARCH: 'Search',
@@ -14,13 +26,16 @@ const logSchema = new mongoose.Schema({
     },   
     date: {
         type: Date,
-        default: new Date(),
         required: true,
     },
     type: {
         type: String,
         required: true,
         trim: true,
+    },
+    api: {
+        type: String,
+        required: false,
     },
     userID: {
         type: String,
@@ -40,7 +55,7 @@ const logSchema = new mongoose.Schema({
 
 logSchema.pre('remove', function () {
     var log = this;
-    logModel.update(log,
+    logModel.updateOne(log,
         {
             isActive: false 
         }, function(err){
@@ -65,10 +80,14 @@ module.exports = {
             type: type.SEARCH,
             userID: data.user.id,
             message: data.keyword,
+            date: Date.now(),
+            api: data.api,
         });
         logData.save(function(err){
             if(err){
-                console.log(err)
+                cb(err)
+            } else {
+                cb();
             }
         });
     },
@@ -79,10 +98,13 @@ module.exports = {
             type: type.AUTH,
             userID: data._userID,
             message: "Connexion",
+            date: Date.now(),
         });
         logData.save(function(err){
             if(err){
-                console.log(err)
+                cb(err)
+            } else {
+                cb();
             }
         });
     },
@@ -93,12 +115,14 @@ module.exports = {
             type: type.AUTH,
             userID: data,
             message: "Deconnexion",
+            date: Date.now(),
         });
         logData.save(function(err){
             if(err){
-                console.log(err)
+                cb(err)
+            } else {
+                cb();
             }
-            cb();
         });
     },
 
@@ -126,7 +150,7 @@ module.exports = {
                 logs.forEach(function(log){
                     log.remove(function(err){
                         if(err){
-                            console.log(err);   
+                            cb(err);   
                         }
                     });
                 })
@@ -146,7 +170,7 @@ module.exports = {
                 logs.forEach(function(log){
                     log.remove(function(err){
                         if(err){
-                            console.log(err);   
+                            cb(err);   
                         }
                     });
                 })
