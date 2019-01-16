@@ -259,7 +259,6 @@ router.post('/forgot', function (req, res) {
 });
 
 router.post('/resetpw/:token',function(req, res) {
-    console.log("post reset : "+req.params.token);
     got('/reset/'+req.params.token, {
         baseUrl: config.userApiUrl,
         json: true,
