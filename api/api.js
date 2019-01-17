@@ -29,16 +29,14 @@ router.get('/users/:id', function(req, res) {
 });
 
 router.post('/authenticate', function(req, res){
-    console.log("1")
     got('/user/authenticate', { 
         baseUrl: config.userApiUrl, 
         json: true,
         body: req.body })
     .then(response => {
-        console.log("2")
         //addLoginLog(response.body.user);
         createToken(response.body.user, function (response) {
-            console.log("4")
+
             res.send(response);
         });
     })
@@ -59,7 +57,6 @@ function createToken(user,cb) {
     const token = jwt.sign(payload, config.secret, {
         expiresIn: "1 days"
     });
-    console.log("3")
     const response = {           
         token: token,
         user: payload.user
