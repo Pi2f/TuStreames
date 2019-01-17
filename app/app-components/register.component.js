@@ -21,10 +21,12 @@
         password: vm.password
       }
       UserService.CreateUser(form).then(function(response){
-        if(response.data.success){          
-          vm.isLoading = false
+        vm.isLoading = false;
+        if(response.data.err){
+          vm.info = response.data.err;
+        } else {
           $state.go('authentication');
-          toastr["success"]("Success! Your account still need to be activated. A confirmation mail has been sent to "+vm.mail);
+          toastr["success"]("Success! Your account still need to be activated. A confirmation mail has been sent to "+vm.mail);                    
         }
       });
     }

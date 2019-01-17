@@ -14,9 +14,9 @@
             <tbody>
                 <tr class="btn-outline-primary" ng-if="!vm.isPageAdmin()" ng-repeat="log in vm.logs" ui-sref="search({value: log.message, api: log.api})">                
                     <td class="py-1">{{ log.date | date:'dd-MM-yyyy HH:mm:ss'}}</td>
-                    <td class="py-1">{{log.message}}</td>
+                    <td class="py-1">{{ log.message }}</td>
                 </tr>
-                <tr ng-if="vm.isPageAdmin()">
+                <tr ng-if="vm.isPageAdmin()" ng-repeat="log in vm.logs">
                     <td class="py-1">{{ log.date | date:'dd-MM-yyyy'}}</td>
                     <td class="py-1">{{ log.username }}</td>
                     <td class="py-1">{{ log.type }}</td>

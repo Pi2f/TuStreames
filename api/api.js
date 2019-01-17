@@ -34,11 +34,14 @@ router.post('/authenticate', function(req, res){
         json: true,
         body: req.body })
     .then(response => {
-        //addLoginLog(response.body.user);
-        createToken(response.body.user, function (response) {
-
-            res.send(response);
-        });
+        if(response.body.user){
+            addLoginLog(response.body.user);
+            createToken(response.body.user, function (response) {
+                res.send(response);
+            });
+        } else {
+            res.send(response.body);
+        }
     })
     .catch((error) => {        
         res.status(error.statusCode).end();

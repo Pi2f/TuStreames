@@ -25,7 +25,9 @@
     });
 
     function isAdmin(user){
-      return vm.isLoading ? user.role.indexOf(USER_ROLES.admin) !== -1 : false;
+      if(user){
+        return vm.isLoading ? user.role.indexOf(USER_ROLES.admin) !== -1 : false;
+      }
     }
 
     function setAdmin() {
@@ -50,7 +52,6 @@
       vm.isLoading = true;
       UserService.GetUsers().then(function(resp){
         vm.users = resp.data;
-        console.log(resp.data);
         vm.isLoading = false;
       })
     }

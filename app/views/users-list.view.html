@@ -7,23 +7,23 @@
     <div class="card-body">   
         <table class="table">
             <tbody ng-if="!vm.isLoading">
-                <tr ng-repeat="user in vm.users">
+                <tr ng-repeat="u in vm.users">
                     <td class="py-1">
-                        <i ng-if="user.isBlocked" class="fas fa-user-alt-slash"></i>
-                        <i ng-if="!user.isBlocked && !vm.isAdmin(user)" class="fas fa-user-alt"></i>
-                        <i ng-if="!user.isBlocked && vm.isAdmin(user)" class="fas fa-user-cog"></i>
+                        <i ng-if="u.isBlocked" class="fas fa-user-alt-slash"></i>
+                        <i ng-if="!u.isBlocked && !vm.isAdmin(u)" class="fas fa-user-alt"></i>
+                        <i ng-if="!u.isBlocked && vm.isAdmin(u)" class="fas fa-user-cog"></i>
                     </td>
-                    <td class="py-1">{{ user.username }}</td>
-                    <td class="py-1">{{ user.role }}</td>
-                    <td class="py-1 d-flex justify-content-between" ng-if="user.mail != vm.currentUser.mail">
-                        <button class="btn btn-outline-success" href="" ng-if="user.isBlocked" data-toggle="modal" data-target="#toggleBlocked"
-                        data-user="{{user}}"><i class="fas fa-user-check"></i></button>
-                        <button class="btn btn-outline-danger" href="" ng-if="!user.isBlocked" data-toggle="modal" data-target="#toggleBlocked"
-                        data-user="{{user}}"><i class="fas fa-ban"></i></button>
-                        <button class="btn btn-outline-secondary" href="" ng-if="!vm.isAdmin(user)" data-toggle="modal" data-target="#setAdmin"
-                        data-user="{{user}}"><i class="fas fa-users-cog"></i></button>
-                        <button class="btn btn-outline-secondary" href="" ng-if="vm.isAdmin(user)" data-toggle="modal" data-target="#setAdmin"
-                        data-user="{{user}}"><i class="fas fa-user-friends"></i></button>
+                    <td class="py-1">{{ u.username }}</td>
+                    <td class="py-1">{{ u.role }}</td>
+                    <td class="py-1 d-flex justify-content-between" ng-if="u.mail != vm.currentUser.mail">
+                        <button class="btn btn-outline-success" href="" ng-if="u.isBlocked" data-toggle="modal" data-target="#toggleBlocked"
+                        data-user="{{u}}"><i class="fas fa-user-check"></i></button>
+                        <button class="btn btn-outline-danger" href="" ng-if="!u.isBlocked" data-toggle="modal" data-target="#toggleBlocked"
+                        data-user="{{u}}"><i class="fas fa-ban"></i></button>
+                        <button class="btn btn-outline-secondary" href="" ng-if="!vm.isAdmin(u)" data-toggle="modal" data-target="#setAdmin"
+                        data-user="{{u}}"><i class="fas fa-users-cog"></i></button>
+                        <button class="btn btn-outline-secondary" href="" ng-if="vm.isAdmin(u)" data-toggle="modal" data-target="#setAdmin"
+                        data-user="{{u}}"><i class="fas fa-user-friends"></i></button>
                     </td>
                 </tr>                           
             </tbody>

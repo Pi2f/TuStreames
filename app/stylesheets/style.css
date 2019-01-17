@@ -14154,6 +14154,20 @@ button.toast-close-button {
   background-size: cover;
 }
 
+.card-activate .card-img-left {
+  width: 45%;
+  /* Link to your background image using in the property below! */
+  background: scroll center url("https://source.unsplash.com/IDNBHZTamQ8/414X512");
+  background-size: cover;
+}
+
+.card-reset .card-img-left {
+  width: 45%;
+  /* Link to your background image using in the property below! */
+  background: scroll center url("https://source.unsplash.com/zEFyM4sulJ8/414X512");
+  background-size: cover;
+}
+
 .sidebar {
   direction: rtl;
   transform-origin: center left;

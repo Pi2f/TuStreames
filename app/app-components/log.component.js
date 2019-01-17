@@ -17,10 +17,13 @@
     function getLogs() {
       LogService.GetLogs(isPageAdmin()).then(function(resp){
         vm.logs = resp.data;
-        vm.logs.forEach(log => 
-          UserService.GetUser(log.userID).then(function(resp){
-            log.username = resp.data.username;
-          })
+        vm.logs.forEach(log =>  {
+          if(vm.isPageAdmin()){
+            UserService.GetUser(log.userID).then(function(resp){
+              log.username = resp.data.username;
+            });
+          }
+        }
         );
       })
     }

@@ -2,7 +2,7 @@
     'use strict';
   
     angular.module('app').component('accountActivation', {
-      templateUrl: 'app/views/accountActivation.view.html',
+      templateUrl: 'app/views/account-activation.view.html',
       controller: accountActivationCtrl,
       controllerAs: 'vm'
     });

@@ -4,7 +4,7 @@ module.exports = {
     userApiUrl : 'https://user-tustreames.herokuapp.com/',
     playlistApiUrl : 'https://playlist-tustreames.herokuapp.com/',
     logApiUrl : 'https://log-tustreames.herokuapp.com/',
-    //userApiUrl : 'http://localhost:3001',
+    // userApiUrl : 'http://localhost:3001',
     //playlistApiUrl : 'http://localhost:3003',
     //logApiUrl : 'http://localhost:3006',
     vimeo: {
