@@ -13,6 +13,7 @@
         service.Forgot = Forgot;
         service.Reset = Reset;
         service.GetUser = GetUser;
+        service.Activate = Activate;
 
         return service;
 
@@ -54,6 +55,11 @@
             return $http.post("/api/resetpw/"+token, form)
             .then(handleSuccess, handleError);
         };
+
+        function Activate(token) {
+            return $http.post("/api/user/activateAccount/"+token)
+            .then(handleSuccess, handleError);
+		}
     }
 
     function handleSuccess(res){

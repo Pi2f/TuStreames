@@ -52,10 +52,16 @@
       data: {
         authorizedRoles: USER_ROLES.all
       }
-    },{
+    },
+    {
       name: 'register',
       url: '/register',
       component: 'register',
+    },
+    {
+      name: 'accountActivation',
+      url: '/accountActivation',
+      component: 'accountActivation',
     },
     {
       name: 'authentication',

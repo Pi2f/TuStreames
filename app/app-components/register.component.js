@@ -24,6 +24,7 @@
         if(response.data.success){          
           vm.isLoading = false
           $state.go('authentication');
+          toastr["success"]("Success! Your account still need to be activated. A confirmation mail has been sent to "+vm.mail);
         }
       });
     }

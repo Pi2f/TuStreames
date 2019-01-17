@@ -29,13 +29,16 @@ router.get('/users/:id', function(req, res) {
 });
 
 router.post('/authenticate', function(req, res){
+    console.log("1")
     got('/user/authenticate', { 
         baseUrl: config.userApiUrl, 
         json: true,
         body: req.body })
     .then(response => {
-        addLoginLog(response.body.user);
+        console.log("2")
+        //addLoginLog(response.body.user);
         createToken(response.body.user, function (response) {
+            console.log("4")
             res.send(response);
         });
     })
@@ -56,7 +59,7 @@ function createToken(user,cb) {
     const token = jwt.sign(payload, config.secret, {
         expiresIn: "1 days"
     });
-
+    console.log("3")
     const response = {           
         token: token,
         user: payload.user
@@ -76,6 +79,15 @@ function addLoginLog(data, res) {
 
 router.post('/register', function(req,res) {
     got('/user/register', { 
+        baseUrl: config.userApiUrl, 
+        json: true,
+        body: req.body })
+    .then(response => res.send(response.body))
+    .catch(handleError);
+});
+
+router.post('/user/activateAccount/:token', function(req,res) {
+    got('/user/activateAccount/'+req.params.token, { 
         baseUrl: config.userApiUrl, 
         json: true,
         body: req.body })

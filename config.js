@@ -1,9 +1,12 @@
 module.exports = {
     port : "3000",
     secret : '278f0c89-1b43-485d-8c3c-411a71b72261',
-    userApiUrl : 'https://user-tustreames.herokuapp.com/',
-    playlistApiUrl : 'https://playlist-tustreames.herokuapp.com/',
-    logApiUrl : 'https://log-tustreames.herokuapp.com/',
+    //userApiUrl : 'https://user-tustreames.herokuapp.com/',
+    //playlistApiUrl : 'https://playlist-tustreames.herokuapp.com/',
+    //logApiUrl : 'https://log-tustreames.herokuapp.com/',
+    userApiUrl : 'http://localhost:3001',
+    playlistApiUrl : 'http://localhost:3003',
+    logApiUrl : 'http://localhost:3006',
     vimeo: {
         clientID : "52661bbe93423155c914afc02a3fef458e29975e",
         unauthenticatedToken: "79745e50364d3998b30466e00e7d122e",
