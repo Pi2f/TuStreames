@@ -5,7 +5,7 @@ const client = new Vimeo(config.vimeo.clientID, config.vimeo.secret, config.vime
           
           
 module.exports = {
-    searchListByKeyword: function (req, cb) {
+    search: function (req, cb) {
         client.request({
             method: 'GET',
             path: '/videos',

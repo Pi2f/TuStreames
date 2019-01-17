@@ -153,7 +153,7 @@ router.post("/search", function(req, res) {
         });
     }
     if(req.body.api == "Vimeo"){
-        vimeoAPI.searchListByKeyword(req, function (response) {
+        vimeoAPI.search(req, function (response) {
             res.status(200).send(JSON.stringify(response));
         });
     }
