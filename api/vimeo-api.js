@@ -31,6 +31,10 @@ module.exports = {
                     },
                     embedUrl : "https://player.vimeo.com/video/"
                 };
+                
+                if(video.description != null && video.description.length > 156) {
+                    video.description = video.description.substring(0,156)+"...";                
+                }   
                 videoSet.push(video);
             }
             const res = {
@@ -52,7 +56,7 @@ module.exports = {
             }
             var videoSet = [];
             for (var i = 0; i < response.data.length; i++) {  
-                video = {
+                let video = {
                     id: response.data[i].uri.split("/")[2],
                     description: response.data[i].description,
                     channel:response.data[i].user.name,
@@ -64,9 +68,10 @@ module.exports = {
                     },
                     embedUrl : "https://player.vimeo.com/video/"
                 };
-                if(video.description.length > 156) {
-                    video.description = video.substring(0,156)+"...";
-                }
+                
+                if(video.description != null && video.description.length > 156) {
+                    video.description = video.description.substring(0,156)+"...";                
+                }   
                 videoSet.push(video);
             }
 
