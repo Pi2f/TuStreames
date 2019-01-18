@@ -54,7 +54,7 @@ module.exports = {
             for (var i = 0; i < response.data.length; i++) {  
                 video = {
                     id: response.data[i].uri.split("/")[2],
-                    description:response.data[i].description,
+                    description: response.data[i].description,
                     channel:response.data[i].user.name,
                     title:response.data[i].name,
                     thumbnails:{
@@ -64,6 +64,9 @@ module.exports = {
                     },
                     embedUrl : "https://player.vimeo.com/video/"
                 };
+                if(video.description.length > 156) {
+                    video.description = video.substring(0,156)+"...";
+                }
                 videoSet.push(video);
             }
 
