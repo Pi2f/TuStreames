@@ -31,7 +31,7 @@
         function GetSession(){
             var token = GetToken();
             if(token != null) {
-                return $http.get('/api/'+token)
+                return $http.get('/api/session')
                 .then(function(response){
                     var session = {
                         user: response.data.user,

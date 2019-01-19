@@ -1,7 +1,10 @@
 <div class="card mb-5 mb-lg-0" ng-init="vm.getLogs()">
     <div class="card-header bg-primary text-secondary d-flex justify-content-between">
-        <div>
+        <div ng-if="!vm.isPageAdmin()">
             Search logs
+        </div>
+        <div ng-if="vm.isPageAdmin()">
+            Logs
         </div>
         <div class="border-left border-secondary pl-3" ng-if="!vm.isPageAdmin()">
             <a href="" class="text-secondary" ng-click="vm.deleteLogs()" ng-disabled="vm.isLoading">
@@ -20,7 +23,7 @@
                     <td class="py-1">{{ log.date | date:'dd-MM-yyyy'}}</td>
                     <td class="py-1">{{ log.username }}</td>
                     <td class="py-1">{{ log.type }}</td>
-                    <td class="py-1">{{ log.message}}</td>
+                    <td class="py-1">{{ log.message }}</td>
                 </tr>                         
             </tbody>
         </table>

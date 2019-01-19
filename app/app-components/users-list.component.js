@@ -15,19 +15,16 @@
     vm.toggleBlocked = toggleBlocked;
     vm.users = [];
     vm.currentUser = SessionService.user;
-
-    $('#setAdmin').on('show.bs.modal', function(e) {
-      vm.user = $(e.relatedTarget).data('user');
-    });
-
-    $('#toggleBlocked').on('show.bs.modal', function(e) {
-      vm.user = $(e.relatedTarget).data('user');
-    });
+    vm.select = select;
 
     function isAdmin(user){
       if(user){
-        return vm.isLoading ? user.role.indexOf(USER_ROLES.admin) !== -1 : false;
+        return user.role.indexOf(USER_ROLES.admin) !== -1;
       }
+    }
+
+    function select(user){
+      vm.user = user;
     }
 
     function setAdmin() {

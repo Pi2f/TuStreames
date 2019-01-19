@@ -11,7 +11,7 @@
     </div>
 
     <div ng-if="!vm.isLoading" class="row m-0">
-        <div class="col-3 stream-link p-2" ng-repeat="video in vm.videoSet" ui-sref="stream({video: video})">
+        <div class="col-3 stream-link p-2" ng-repeat="video in vm.videoSet" ui-sref="stream({videoId: video.id, api:vm.api})">
             <div class="card h-100">
                 <div class="card-body p-0">
                     <img class="card-img-top stream-link" src="{{video.thumbnails.medium}}" alt="Card image cap">

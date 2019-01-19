@@ -14,6 +14,8 @@
     vm.videoSet = [];
     vm.search = search;
     vm.page = page;
+    vm.api = $stateParams.api;
+    vm.searchValue = $stateParams.value;
 
     search();
 
@@ -22,14 +24,14 @@
         vm.isLoading = true;
         SearchService.Search({
           user: SessionService.user,
-          keyword: $stateParams.value,
-          api: $stateParams.api,
+          keyword: vm.searchValue,
+          api: vm.api,
         }).then((response) => {
           vm.videoSet = response.videoSet;
           vm.isLoading = false;
           vm.nextPage = response.nextPageToken;
           vm.prevPage = response.prevPageToken;
-          LogService.AddSearchLog($stateParams.value,  $stateParams.api);
+          LogService.AddSearchLog(vm.searchValue, vm.api);
           $scope.$emit(SEARCH_EVENTS.searchSuccess, {})
         });
       } else {

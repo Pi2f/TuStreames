@@ -86,11 +86,8 @@
     },
     {
       name: 'stream',
-      url: '/stream',
+      url: '/stream?videoId&api',
       component: 'stream',
-      params: {
-        video: null,
-      },
       data: {
         authorizedRoles: USER_ROLES.all,
       }

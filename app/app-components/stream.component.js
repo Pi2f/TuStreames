@@ -11,13 +11,20 @@
     StreamCtrl.$inject = ['$scope','$stateParams','PlaylistService', 'PLAYLIST_EVENTS'];
     function StreamCtrl($scope, $stateParams, PlaylistService, PLAYLIST_EVENTS){
         var vm = this;
-
-        if($stateParams.video){
-          PlaylistService.StoreVideo($stateParams.video);
+        if($stateParams.api === "YouTube"){
+          PlaylistService.VideoYoutube($stateParams.videoId).then(function(response){            
+            vm.video = response.data.videoSet[0];
+            vm.video.url = vm.video.embedUrl + vm.video.id;
+          });
         }
-        vm.video = {};
-        PlaylistService.GetVideo(vm.video);
-        vm.video.url = vm.video.embedUrl + vm.video.id;
+
+        if($stateParams.api === "Vimeo"){
+          PlaylistService.VideoVimeo($stateParams.videoId).then(function(response){
+            vm.video = response.data.video;
+            vm.video.url = vm.video.embedUrl + vm.video.id;
+          });
+        }
+
         vm.addToPlaylist = addToPlaylist;
 
         $('#addToPlaylist').on('shown.bs.modal', function () {

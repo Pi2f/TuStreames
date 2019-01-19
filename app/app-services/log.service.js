@@ -17,17 +17,17 @@
 
         function GetLogs(isPageAdmin) {
             if(isPageAdmin){
-                return  $http.get('/api/log/'+SessionService.user.id).then(handleSuccess, handleError);
+                return  $http.get('/api/log').then(handleSuccess, handleError);
             } else {
-                return $http.get('/api/log/search/'+SessionService.user.id).then(handleSuccess, handleError);
+                return $http.get('/api/log/search').then(handleSuccess, handleError);
             }
         }
     
         function DeleteLogs(isPageAdmin) {
             if(isPageAdmin){
-                return  $http.delete('/api/log/'+SessionService.user.id).then(handleSuccess, handleError);
+                return  $http.delete('/api/log').then(handleSuccess, handleError);
             } else {
-                return $http.delete('/api/log/search/'+SessionService.user.id).then(handleSuccess, handleError);
+                return $http.delete('/api/log/search').then(handleSuccess, handleError);
             }
         }
     }

@@ -11,8 +11,15 @@
         ]);
     })
 
-    .factory('AuthInterceptor', function ($rootScope, $q, $location, AUTH_EVENTS) {
+    .factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
         return {
+            request: function(config){
+                var token = localStorage.getItem('tuStreamesToken');
+                if(token){
+                    config.headers.authorization = token;
+                }
+                return config;
+            },
             responseError: function (response) { 
                 $rootScope.$broadcast({
                     401: AUTH_EVENTS.notAuthenticated,
@@ -22,5 +29,5 @@
                 return $q.reject(response);
             }
         };
-    })
+    }) 
 })();

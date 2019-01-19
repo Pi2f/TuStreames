@@ -13,7 +13,7 @@
         return service;
 
         function Login(mail, password) {
-            return $http.post('/api/authenticate',{mail: mail, password: password})
+            return $http.post('/authenticate',{mail: mail, password: password})
             .then(function(response){
                 if(response.data.err){
                     return response.data;
@@ -37,7 +37,7 @@
         }
 
         function Logout() {        
-            return $http.get('/api/logout/'+SessionService.user.id).then(function(){
+            return $http.get('/logout/'+SessionService.user.id).then(function(){
                 SessionService.DeleteSession();
             });
         }

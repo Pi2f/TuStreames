@@ -18,7 +18,7 @@
         return service;
 
         function GetUsers(){
-            return $http.get('/api/users/'+SessionService.user.id).then(handleSuccess, handleError);
+            return $http.get('/api/users').then(handleSuccess, handleError);
         }
 
         function GetUser(id){
@@ -44,7 +44,7 @@
             const form = {
                 mail : mail
             }
-            return $http.post("/api/forgot", form)
+            return $http.post("/forgot", form)
             .then(handleSuccess, handleError);
         };
 
@@ -52,7 +52,7 @@
             const form = {
                 password : password
             }
-            return $http.post("/api/resetpw/"+token, form)
+            return $http.post("/resetpw/"+token, form)
             .then(handleSuccess, handleError);
         };
 
