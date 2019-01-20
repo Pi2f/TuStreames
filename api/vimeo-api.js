@@ -1,10 +1,10 @@
-var Vimeo = require('vimeo').Vimeo;
+const Vimeo = require('vimeo').Vimeo;
 const config = require('../config.js');
-const client = new Vimeo(config.vimeo.clientID, config.vimeo.secret, config.vimeo.unauthenticatedToken);
+const vimeo = new Vimeo(config.vimeo.clientID, config.vimeo.secret, config.vimeo.unauthenticatedToken);
 
 function responseDataList(response) {
-    var videoSet = [];
-    for (var i = 0; i < response.data.length; i++) {
+    const videoSet = [];
+    for (let i = 0; i < response.data.length; i++) {
         let video = {
             id: response.data[i].uri.split("/")[2],
             description: response.data[i].description,
@@ -56,7 +56,7 @@ function responseData(response) {
 
 module.exports = {
     search: function (req, cb) {
-        client.request({
+        vimeo.request({
             method: 'GET',
             path: '/videos',
             query: {
@@ -73,7 +73,7 @@ module.exports = {
     },
 
     page: function (req, cb) {
-        client.request({
+        vimeo.request({
             method: 'GET',
             path: req.body.pageToken,
         }, function (error, response) {
@@ -86,7 +86,7 @@ module.exports = {
     },
 
     video: function (req, cb) {
-        client.request({
+        vimeo.request({
             method: 'GET',
             path: '/videos/' + req.params.id,
         }, function (error, response) {

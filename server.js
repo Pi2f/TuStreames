@@ -75,8 +75,8 @@ function addLoginLog(data, res) {
         .catch(handleError);
 }
 
-app.get('/logout/:id', function (req, res) {
-    got('/logout/' + req.params.id, {
+app.get('/logout', function (req, res) {
+    got('/logout/' + req.user.user.id, {
             baseUrl: config.logApiUrl,
             json: true
         })

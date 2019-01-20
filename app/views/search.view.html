@@ -14,7 +14,7 @@
         <div class="col-3 stream-link p-2" ng-repeat="video in vm.videoSet" ui-sref="stream({videoId: video.id, api:vm.api})">
             <div class="card h-100">
                 <div class="card-body p-0">
-                    <img class="card-img-top stream-link" src="{{video.thumbnails.medium}}" alt="Card image cap">
+                    <img class="card-img-top stream-link" ng-src="{{video.thumbnails.medium}}" alt="Card image cap">
                     <h5 class="card-title">{{video.title}}"</h5>
                     <p class="card-text m-3">
                         {{video.description}}

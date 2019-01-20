@@ -1,11 +1,12 @@
-var {
+const {
     google
 } = require('googleapis');
 const googleAuth = require('./google-authentication.js');
-require('dotenv').config();
+const youtube = google.youtube('v3');
+
 
 function removeEmptyParameters(params) {
-    for (var p in params) {
+    for (let p in params) {
         if (!params[p] || params[p] == 'undefined') {
             delete params[p];
         }
@@ -14,10 +15,9 @@ function removeEmptyParameters(params) {
 }
 
 function searchListByKeyword(auth, requestData, cb) {
-    var service = google.youtube('v3');
-    var parameters = removeEmptyParameters(requestData['params']);
+    const parameters = removeEmptyParameters(requestData['params']);
     parameters['auth'] = auth;
-    service.search.list(parameters, function (err, response) {
+    youtube.search.list(parameters, function (err, response) {
         if (err) {
             console.log('The API returned an error: ' + err);
             return;
@@ -28,10 +28,9 @@ function searchListByKeyword(auth, requestData, cb) {
 }
 
 function getVideo(auth, requestData, cb) {
-    var service = google.youtube('v3');
-    var parameters = removeEmptyParameters(requestData['params']);
+    const parameters = removeEmptyParameters(requestData['params']);
     parameters['auth'] = auth;
-    service.videos.list(parameters, function (err, response) {
+    youtube.videos.list(parameters, function (err, response) {
         if (err) {
             console.log('The API returned an error: ' + err);
             return;
@@ -42,9 +41,9 @@ function getVideo(auth, requestData, cb) {
 }
 
 function responseData(response) {
-    var videoSet = [];
-    for (var i = 0; i < response.data.items.length; i++) {
-        var video = {
+    const videoSet = [];
+    for (let i = 0; i < response.data.items.length; i++) {
+        const video = {
             id: response.data.items[i].id.videoId,
             description: response.data.items[i].snippet.description,
             channel: response.data.items[i].snippet.channelTitle,

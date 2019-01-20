@@ -10,19 +10,26 @@
   PlaylistCtrl.$inject = ['$stateParams', 'PlaylistService'];
 
   function PlaylistCtrl($stateParams, PlaylistService) {
-    var vm = this;
-    vm.playlist = $stateParams.playlist;
+    const vm = this;
+    vm.playlistId = $stateParams.id;
     vm.removeVideo = removeVideo;
+    getPlaylist();
 
     function removeVideo(videoId){
       vm.isLoading = true;
-      var index = vm.playlist.videos.findIndex(function(video){
+      const index = vm.playlist.videos.findIndex(function(video){
         return video.id == videoId;
       });
       vm.playlist.videos.splice(index,1);
       PlaylistService.UpdatePlaylist(vm.playlist).then(function(){
         vm.isLoading = false;
       });
+    }
+
+    function getPlaylist(){
+      PlaylistService.GetPlaylistsById(vm.playlistId).then(function(response){
+        vm.playlist = response.data;
+      })
     }
 
   }

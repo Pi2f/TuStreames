@@ -15,7 +15,7 @@ router.use(
                 if (err) {
                     res.status(200).send(JSON.stringify(err));
                 } else {
-                    req.user = out;
+                    req.user = out.user;
                     next();
                 }
             });
@@ -26,11 +26,11 @@ router.use(
 );
 
 router.get('/session', function (req, res) {
-    res.status(200).send(JSON.stringify(req.user));
+    res.status(200).send(JSON.stringify({ user: req.user }));
 });
 
 router.get('/user/:id', function (req, res) {
-    got('/user/admin/' + req.user.user.id, {
+    got('/user/admin/' + req.user.id, {
         baseUrl: config.userApiUrl,
         json: true
     })
@@ -50,7 +50,7 @@ router.get('/user/:id', function (req, res) {
 });
 
 router.get('/users', function (req, res) {
-    got('user/all/' + req.user.user.id, {
+    got('user/all/' + req.user.id, {
             baseUrl: config.userApiUrl,
             json: true
         })
@@ -103,6 +103,15 @@ router.post('/playlist', function (req, res) {
             baseUrl: config.playlistApiUrl,
             json: true,
             body: req.body
+        })
+        .then(response => res.send(response.body))
+        .catch(handleError);
+});
+
+router.get('/playlists/user', function (req, res) {
+    got('/playlists/user/' + req.user.id, {
+            baseUrl: config.playlistApiUrl,
+            json: true
         })
         .then(response => res.send(response.body))
         .catch(handleError);
@@ -176,7 +185,7 @@ router.get("/video/vimeo/:id", function (req, res) {
 });
 
 router.get("/log/search/", function (req, res) {
-    got('/log/search/' + req.user.user.id, {
+    got('/log/search/' + req.user.id, {
             baseUrl: config.logApiUrl,
             json: true
         })
@@ -195,13 +204,13 @@ router.post("/log/search", function (req, res) {
 });
 
 router.get("/log", function (req, res) {
-    got('/user/admin/' + req.user.user.id, {
+    got('/user/admin/' + req.user.id, {
             baseUrl: config.userApiUrl,
             json: true
         })
         .then(function (response) {
             if (response.body.isAdmin) {
-                got('/log/' + req.user.user.id, {
+                got('/log/' + req.user.id, {
                         baseUrl: config.logApiUrl,
                         json: true
                     })
@@ -215,13 +224,13 @@ router.get("/log", function (req, res) {
 });
 
 router.delete('/log', function (req, res) {
-    got('/user/admin/' + req.user.user.id, {
+    got('/user/admin/' + req.user.id, {
             baseUrl: config.userApiUrl,
             json: true
         })
         .then(function (response) {
             if (response.body.isAdmin) {
-                got('/log/search/' + req.user.user.id, {
+                got('/log/search/' + req.user.id, {
                         baseUrl: config.logApiUrl,
                         json: true,
                         method: 'DELETE'
@@ -236,10 +245,19 @@ router.delete('/log', function (req, res) {
 });
 
 router.delete('/log/search', function (req, res) {
-    got('/log/search' + req.user.user.id, {
+    got('/log/search' + req.user.id, {
             baseUrl: config.logApiUrl,
             json: true,
             method: 'DELETE'
+        })
+        .then(response => res.send(response.body))
+        .catch(handleError);
+});
+
+router.get('/logout', function (req, res) {
+    got('/logout/' + req.user.id, {
+            baseUrl: config.logApiUrl,
+            json: true
         })
         .then(response => res.send(response.body))
         .catch(handleError);

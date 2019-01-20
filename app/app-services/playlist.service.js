@@ -5,13 +5,14 @@
     PlaylistService.$inject = ['$http', 'SessionService'];
 
     function PlaylistService($http, SessionService) {
-        var service = {};
+        const service = {};
         service.CreatePlaylist = CreatePlaylist;
         service.GetPlaylistsByUserId = GetPlaylistsByUserId;
         service.UpdatePlaylist = UpdatePlaylist;
         service.DeletePlaylist = DeletePlaylist;
         service.VideoYoutube = VideoYoutube;
         service.VideoVimeo = VideoVimeo;
+        service.GetPlaylistsById = GetPlaylistsById;
 
         return service;
 
@@ -31,8 +32,13 @@
                 .then(handleSuccess, handleError);
         }
 
+        function GetPlaylistsById(id) {
+            return $http.get('/api/playlist/' + id)
+                .then(handleSuccess, handleError);
+        }
+
         function GetPlaylistsByUserId() {
-            return $http.get('/api/playlist/' + SessionService.user.id)
+            return $http.get('/api/playlists/user')
                 .then(handleSuccess, handleError);
         }
 

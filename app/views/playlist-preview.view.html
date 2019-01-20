@@ -6,10 +6,10 @@
     <div class="card" ng-if="!vm.isLoading" ng-repeat="playlist in vm.playlists">
       <div class="playlist-link">
         <div class="card-body">
-          <a ui-sref="playlist({playlist: playlist})">
+          <a ui-sref="playlist({id: playlist._playlistID})">
             <div class="row">
               <div class="col-md-7 px-2">
-                <img class="img-fluid card-img-top rounded mb-md-0" src="{{ playlist.videos[0] ? playlist.videos[0].thumbnails.medium : vm.thumbnailDefault }}"
+                <img class="img-fluid card-img-top rounded mb-md-0" ng-src="{{ playlist.videos[0] ? playlist.videos[0].thumbnails.medium : vm.thumbnailDefault }}"
                   alt="">
                 <div class="card-title p-5">
                   <h1>{{playlist.name}}</h1>
@@ -18,15 +18,15 @@
               <div class="col-md-5">
                 <div class="row">
                   <div class="col-6 px-1">
-                    <img class="img-fluid rounded mb-2" src="{{ playlist.videos[1] ? playlist.videos[1].thumbnails.small : vm.thumbnailDefault }}"
+                    <img class="img-fluid rounded mb-2" ng-src="{{ playlist.videos[1] ? playlist.videos[1].thumbnails.small : vm.thumbnailDefault }}"
                       alt="">
-                    <img class="img-fluid rounded" src="{{ playlist.videos[2] ? playlist.videos[2].thumbnails.small : vm.thumbnailDefault }}"
+                    <img class="img-fluid rounded" ng-src="{{ playlist.videos[2] ? playlist.videos[2].thumbnails.small : vm.thumbnailDefault }}"
                       alt="">
                   </div>
                   <div class="col-6 px-1">
-                    <img class="img-fluid rounded mb-2" src="{{ playlist.videos[3] ? playlist.videos[3].thumbnails.small : vm.thumbnailDefault }}"
+                    <img class="img-fluid rounded mb-2" ng-src="{{ playlist.videos[3] ? playlist.videos[3].thumbnails.small : vm.thumbnailDefault }}"
                       alt="">
-                    <img class="img-fluid rounded" src="{{ playlist.videos[4] ? playlist.videos[4].thumbnails.small : vm.thumbnailDefault }}"
+                    <img class="img-fluid rounded" ng-src="{{ playlist.videos[4] ? playlist.videos[4].thumbnails.small : vm.thumbnailDefault }}"
                       alt="">
                   </div>
                 </div>

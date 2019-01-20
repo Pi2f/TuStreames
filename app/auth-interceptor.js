@@ -14,7 +14,7 @@
     .factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
         return {
             request: function(config){
-                var token = localStorage.getItem('tuStreamesToken');
+                const token = localStorage.getItem('tuStreamesToken');
                 if(token){
                     config.headers.authorization = token;
                 }

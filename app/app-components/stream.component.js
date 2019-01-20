@@ -11,17 +11,22 @@
     StreamCtrl.$inject = ['$scope','$stateParams','PlaylistService', 'PLAYLIST_EVENTS'];
     function StreamCtrl($scope, $stateParams, PlaylistService, PLAYLIST_EVENTS){
         var vm = this;
+
         if($stateParams.api === "YouTube"){
           PlaylistService.VideoYoutube($stateParams.videoId).then(function(response){            
             vm.video = response.data.videoSet[0];
-            vm.video.url = vm.video.embedUrl + vm.video.id;
+            vm.video.id = $stateParams.videoId;
+            vm.video.api = $stateParams.api;
+            vm.video.url = vm.video.embedUrl + $stateParams.videoId;
           });
         }
 
         if($stateParams.api === "Vimeo"){
           PlaylistService.VideoVimeo($stateParams.videoId).then(function(response){
             vm.video = response.data.video;
-            vm.video.url = vm.video.embedUrl + vm.video.id;
+            vm.video.id = $stateParams.videoId;
+            vm.video.api = $stateParams.api;
+            vm.video.url = vm.video.embedUrl + $stateParams.videoId;
           });
         }
 
@@ -37,7 +42,7 @@
           });
         }
 
-        function addToPlaylist(playlist) {
+        function addToPlaylist(playlist) {                    
           playlist.videos.push(vm.video);
           vm.isLoading = true;
           PlaylistService.UpdatePlaylist(playlist).then(function(){

@@ -45,7 +45,7 @@
       "hideMethod": "fadeOut"
     }
 
-    var state = [{
+    const state = [{
       name: 'default',
       url: '',
       component: 'home',
@@ -94,11 +94,8 @@
     },
     {
       name: 'playlist',
-      url: '/playlist',
+      url: '/playlist?id',
       component: 'playlist',
-      params: {
-        playlist: null,
-      },
       data: {
         authorizedRoles: USER_ROLES.all,
       }
@@ -146,7 +143,7 @@
             return stateService.target("authentication");
           } else {
             $rootScope.$broadcast(AUTH_EVENTS.authenticated, user);          
-            var authorizedRoles = transition.to().data.authorizedRoles;
+            const authorizedRoles = transition.to().data.authorizedRoles;
             if(!isAuthorized(authorizedRoles,user)){
               $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
               return stateService.target('home');
@@ -169,7 +166,7 @@
   }
   
   function AppController($scope, $state, $location, USER_ROLES, AuthenticationService, AUTH_EVENTS, PLAYLIST_EVENTS, SEARCH_EVENTS){
-    var vm = this;
+    const vm = this;
     vm.selected = "YouTube";
     vm.unselected = "Vimeo";
     vm.currentUser = null;

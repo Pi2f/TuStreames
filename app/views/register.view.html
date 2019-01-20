@@ -26,13 +26,15 @@
       </div>
 
       <div class="form-label-group">
-        <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Password" ng-model="confPassword" required>
+        <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Password" ng-model="confPassword"
+          required>
         <label for="inputConfirmPassword">Confirm password</label>
       </div>
 
       <small>{{vm.info}}</small>
 
-      <button class="btn btn-lg btn-primary btn-block text-uppercase" ng-disabled="vm.password !== confPassword || vm.isLoading" type="submit">Register</button>
+      <button class="btn btn-lg btn-primary btn-block text-uppercase" ng-disabled="vm.password !== confPassword || vm.isLoading"
+        type="submit">Register</button>
       <a class="d-block text-center mt-2 small" ui-sref="authentication">Sign In</a>
       <hr class="my-4">
     </form>

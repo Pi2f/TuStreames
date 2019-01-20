@@ -6,8 +6,8 @@
   <div ng-repeat="video in vm.playlist.videos">
     <div class="row">
       <div class="col-md-7">
-        <a ui-sref="stream({video: video})">
-          <img class="img-fluid rounded mb-3 mb-md-0" src="{{ video.thumbnails.high }}" alt="">
+        <a ui-sref="stream({videoId: video.id, api: video.api})">
+          <img class="img-fluid rounded mb-3 mb-md-0" ng-src="{{ video.thumbnails.high }}" alt="">
         </a>
       </div>
       <div class="col-md-5">
