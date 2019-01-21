@@ -24,7 +24,7 @@
         if($stateParams.api === "Vimeo"){
           PlaylistService.VideoVimeo($stateParams.videoId).then(function(response){
             if (response.data.err) {
-              vm.info = err
+              vm.info = response.data.err;
             } else {
               vm.video = response.data.video;
               vm.video.id = $stateParams.videoId;
