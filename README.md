@@ -57,7 +57,7 @@ Récupérer au préalables les identifiants pour utiliser les API en suivant ces
 
 module.exports = {
     port: '3000', // port d'écoute du serveur
-    secret : 'tokenSecret', // token public secret 
+    secret : '<tokenSecret>', // token public secret 
     userApiUrl : '<urlAdress>', // adresse de l'application user-tustreames
     playlistApiUrl : '<urlAdress>', // adresse de l'application playlist-tustreames
     logApiUrl : '<urlAdress>', // adresse de l'application log-tustreames,
@@ -77,10 +77,17 @@ module.exports = {
 }
 
 ```
+---
+
+### Configuration de la connexion HTTPS suivre le tutoriel SSL.docx
+
+---
 
 ### Exécution
 
-Pour exécuter les applications il suffit de lancer la commande ` npm start ` pour chaque application.
+1. A la racine de chaque projet, commencer par installer tous les packages à l'aide de la commande `npm install` ou `yarn`.
+
+2. Pour exécuter les applications il suffit de lancer la commande ` npm start ` pour chaque application.
 
 ## Important
 
