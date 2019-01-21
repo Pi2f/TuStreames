@@ -1,9 +1,0 @@
-node_modules
-yarn.lock
-.vscode
-.env
-SSL.docx
-script.bat
-Dockerfile
-docker-compose.yml
-.dockerignore
