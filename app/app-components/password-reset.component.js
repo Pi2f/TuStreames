@@ -15,10 +15,16 @@
 
     function reset(){
       if (vm.password == vm.passwordCheck) {
+        vm.isLoading = true;
         const token = document.location.href.split('token=')[1];
-        UserService.Reset(vm.password, token).then(function() {          
-          $state.go('authentication');
-          toastr["success"]("Success! Your password has been changed.")
+        UserService.Reset(vm.password, token).then(function() {
+          vm.isLoading = false;
+          if(response.data.err){
+            vm.info = response.data.err;
+          } else {          
+            $state.go('authentication');
+            toastr["success"]("Success! Your password has been changed.");
+          }
         });
       } else {
         vm.password = "";

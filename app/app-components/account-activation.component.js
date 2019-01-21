@@ -14,10 +14,16 @@
       vm.activate = activate;
   
       function activate(){
+        vm.isLoading = true;
         const token = document.location.href.split('token=')[1];
-        UserService.Activate(token).then(function() {          
+        UserService.Activate(token).then(function() {     
+          vm.isLoading = false;
+          if(response.data.err){
+            vm.info = response.data.err;
+          } else {     
             $state.go('authentication');
-            toastr["success"]("Success! Your account has been activated.")
+            toastr["success"]("Success! Your account has been activated.");
+          }
         });  
       }  
     }

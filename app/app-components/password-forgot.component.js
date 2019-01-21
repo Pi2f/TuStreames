@@ -16,8 +16,12 @@
       function forgot(){
         vm.isLoading = true;
         UserService.Forgot(vm.mail).then(function () {
-            toastr["info"]("Reset password send");
-            vm.isLoading = false;
+          vm.isLoading = false;
+          if(response.data.err){
+            vm.info = response.data.err;
+          } else {
+            toastr["info"]("Reset password send");          
+          }
         });
       }
 
