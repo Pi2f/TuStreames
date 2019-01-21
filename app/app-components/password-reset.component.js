@@ -17,8 +17,9 @@
       if (vm.password == vm.passwordCheck) {
         vm.isLoading = true;
         const token = document.location.href.split('token=')[1];
-        UserService.Reset(vm.password, token).then(function() {
+        UserService.Reset(vm.password, token).then(function(response) {
           vm.isLoading = false;
+          console.log(response);
           if(response.data.err){
             vm.info = response.data.err;
           } else {          

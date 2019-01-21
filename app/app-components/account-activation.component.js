@@ -16,7 +16,7 @@
       function activate(){
         vm.isLoading = true;
         const token = document.location.href.split('token=')[1];
-        UserService.Activate(token).then(function() {     
+        UserService.Activate(token).then(function(response) {     
           vm.isLoading = false;
           if(response.data.err){
             vm.info = response.data.err;

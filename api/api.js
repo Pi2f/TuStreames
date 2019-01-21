@@ -10,7 +10,9 @@ const config = require('./../config.js');
 router.use(
     function verifyToken(req, res, next) {
         const token = req.headers.authorization;
-        if (token) {
+        if (req.method == "POST" && (req.path == "/register" || req.path.includes("/user/activateAccount/"))) {
+           next(); 
+        } else if (token) {
             jwt.verify(token, config.secret, function (err, out) {
                 if (err) {
                     res.status(200).send(JSON.stringify(err));

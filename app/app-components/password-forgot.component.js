@@ -7,19 +7,20 @@
       controllerAs: 'vm'
     });
     
-    PasswordForgotController.$inject = ['UserService'];
+    PasswordForgotController.$inject = ['$state','UserService'];
 
-    function PasswordForgotController(UserService){
+    function PasswordForgotController($state, UserService){
       var vm = this;
       vm.forgot = forgot;
 
       function forgot(){
         vm.isLoading = true;
-        UserService.Forgot(vm.mail).then(function () {
+        UserService.Forgot(vm.mail).then(function (response) {
           vm.isLoading = false;
           if(response.data.err){
             vm.info = response.data.err;
           } else {
+            $state.go('authentication');
             toastr["info"]("Reset password send");          
           }
         });
