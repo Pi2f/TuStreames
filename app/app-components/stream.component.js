@@ -23,10 +23,14 @@
 
         if($stateParams.api === "Vimeo"){
           PlaylistService.VideoVimeo($stateParams.videoId).then(function(response){
-            vm.video = response.data.video;
-            vm.video.id = $stateParams.videoId;
-            vm.video.api = $stateParams.api;
-            vm.video.url = vm.video.embedUrl + $stateParams.videoId;
+            if (response.data.err) {
+              vm.info = err
+            } else {
+              vm.video = response.data.video;
+              vm.video.id = $stateParams.videoId;
+              vm.video.api = $stateParams.api;
+              vm.video.url = vm.video.embedUrl + $stateParams.videoId;
+            }
           });
         }
 

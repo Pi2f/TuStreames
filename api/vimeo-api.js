@@ -92,9 +92,11 @@ module.exports = {
         }, function (error, response) {
             if (error) {
                 console.log(error);
+                cb({err:error});
+            } else {
+                const res = responseData(response);
+                cb(res);
             }
-            const res = responseData(response);
-            cb(res);
         });
     }
 }
